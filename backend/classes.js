@@ -6,7 +6,7 @@ class User {
    *
    * @param {String} name
    * @param {String} email
-   * @param {geoJson} location
+   * @param {String} location // postCode
    * @param {[Skills]} skills
    */
   constructor(name, email, location, skills) {
