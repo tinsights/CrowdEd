@@ -15,8 +15,8 @@ class User {
     this.email = email;
     this.location = location;
     this.skills = skills;
-    this.inbox = [];
-    this.outbox = [];
+    // this.inbox = [];
+    // this.outbox = [];
   }
 }
 
@@ -31,7 +31,7 @@ class Skill {
    */
   constructor(category, subject, title, description) {
     this._id = new ObjectId();
-    this.category = category;
+    // this.category = category;
     this.subject = subject;
     this.title = title;
     this.description = description;
