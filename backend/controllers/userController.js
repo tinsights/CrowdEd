@@ -16,8 +16,9 @@ function addUser(req, res) {
   if (!name || !email || !location || !skills) {
     res.status(400);
     throw new Error("Invalid Form");
+  } else {
+    res.status(200).json({ message: "Set User" });
   }
-  res.status(200).json({ message: "Set User" });
 }
 
 function updateUser(req, res) {
