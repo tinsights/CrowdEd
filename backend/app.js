@@ -5,4 +5,8 @@ const PORT = process.env.PORT || 8888;
 const app = express();
 const { User, Skill } = require("./classes");
 
+app.get("/", (req, res, next) => {
+  res.send("hello");
+});
+
 app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));

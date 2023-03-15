@@ -4,9 +4,9 @@ const ObjectId = require("mongodb").ObjectId;
 class User {
   /**
    *
-   * @param {string} name
-   * @param {string} email
-   * @param {[lat,lng]} location
+   * @param {String} name
+   * @param {String} email
+   * @param {geoJson} location
    * @param {[Skills]} skills
    */
   constructor(name, email, location, skills) {
@@ -20,7 +20,15 @@ class User {
   }
 }
 
+/** Class representing a Skill */
 class Skill {
+  /**
+   *
+   * @param {String} category
+   * @param {String} subject
+   * @param {String} title
+   * @param {String} description
+   */
   constructor(category, subject, title, description) {
     this._id = new ObjectId();
     this.category = category;
