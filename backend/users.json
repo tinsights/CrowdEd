@@ -1,0 +1,26 @@
+{
+  "_id": 1,
+  "name": "Tinaesh",
+  "email": "user@email.com",
+  "primaryLocation": [1.320858072273197, 103.859878540348],
+  "skills": [
+    {
+      "_id": 1,
+      "category": "Software & Technology",
+      "subject": "Computing",
+      "title": "CS50x Mentoring!",
+      "description": "Personal tutoring and code review for the acclaimed Harvard CS50x: Intro to Computer Science",
+      "numEndorsements": 1,
+      "endorsements": [
+        {
+          "_id": 1,
+          "user": "Guang Fu",
+          "review": "Best teacher ever",
+          "rating": 5
+        }
+      ]
+    }
+  ],
+  "inbox": [],
+  "outbox": []
+}
