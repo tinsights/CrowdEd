@@ -1,30 +1,53 @@
-const { json } = require("express");
 const jsonfile = require("jsonfile");
-const { User, Skill } = require("../classes");
+const { User } = require("../model/classes");
+
+const usersFile = "./backend/public/data/users.json";
 
 function getUsers(req, res) {
   jsonfile
-    .readFile("./backend/public/data/users.json")
-    .then((data) => res.status(200).json(data))
+    .readFile(usersFile)
+    .then((users) => res.status(200).json(users))
     .catch((err) => {
       console.log(err);
+      res.status(500);
+      throw new Error(err);
+    });
+}
+
+function getUserById(req, res) {
+  if (!req.params.id) {
+    res.status(400);
+    throw new Error("ID required");
+  }
+  const userID = req.params.id;
+  console.log(userID);
+  jsonfile
+    .readFile(usersFile)
+    .then((users) => {
+      const userToDisplay = users[users.findIndex((user) => user._id === userID)];
+      res.status(200).json(userToDisplay);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500);
+      throw new Error(err);
     });
 }
 
 function addUser(req, res) {
   const payload = req.body;
-  const { name, email, location, skills } = payload;
+  const { name, email, location, skill } = payload;
   console.log(payload);
-  if (!name || !email || !location || !skills) {
+  if (!name || !email || !location || !skill) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
-    const newUser = new User(name, email, location, skills);
+    const newUser = new User(name, email, location, skill);
     jsonfile
-      .readFile("./backend/public/data/users.json")
+      .readFile(usersFile)
       .then((users) => {
         users.push(newUser);
-        jsonfile.writeFile("./backend/public/data/users.json", users, (err) => {
+        jsonfile.writeFile(usersFile, users, (err) => {
           if (err) {
             console.log(err);
             res.status(500);
@@ -45,20 +68,20 @@ function updateUser(req, res) {
     throw new Error("ID required");
   }
   const payload = req.body;
-  const { name, email, location, skills } = payload;
+  const { name, email, location, skill } = payload;
   console.log(payload);
-  if (!name || !email || !location || !skills) {
+  if (!name || !email || !location || !skill) {
     res.status(400);
     throw new Error("Invalid Form");
   }
   const idToUpdate = req.params.id;
-  const updatedUser = new User(name, email, location, skills);
+  const updatedUser = new User(name, email, location, skill);
   jsonfile
-    .readFile("./backend/public/data/users.json")
+    .readFile(usersFile)
     .then((users) => {
       const indexToUpdate = users.findIndex((user) => user._id === idToUpdate);
       const updatedUsers = [...users.slice(0, indexToUpdate), updatedUser, ...users.slice(indexToUpdate + 1)];
-      jsonfile.writeFile("./backend/public/data/users.json", updatedUsers, (err) => {
+      jsonfile.writeFile(usersFile, updatedUsers, (err) => {
         if (err) {
           res.status(500);
           throw new Error(err);
@@ -79,11 +102,11 @@ function deleteUser(req, res) {
   }
   const idToDelete = req.params.id;
   jsonfile
-    .readFile("./backend/public/data/users.json")
+    .readFile(usersFile)
     .then((users) => {
       const indexToDelete = users.findIndex((user) => user._id === idToDelete);
       const updatedUsers = [...users.slice(0, indexToDelete), ...users.slice(indexToDelete + 1)];
-      jsonfile.writeFile("./backend/public/data/users.json", updatedUsers, (err) => {
+      jsonfile.writeFile(usersFile, updatedUsers, (err) => {
         if (err) {
           res.status(500);
           throw new Error(err);
@@ -97,6 +120,7 @@ function deleteUser(req, res) {
 }
 
 module.exports = {
+  getUserById,
   getUsers,
   addUser,
   updateUser,

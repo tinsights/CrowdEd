@@ -9,12 +9,12 @@ class User {
    * @param {String} location // postCode
    * @param {[Skills]} skills
    */
-  constructor(name, email, location, skills) {
+  constructor(name, email, location, skill) {
     this._id = new ObjectId();
     this.name = name;
     this.email = email;
     this.location = location;
-    this.skills = skills;
+    this.skill = skill;
     // this.inbox = [];
     // this.outbox = [];
   }
@@ -29,14 +29,15 @@ class Skill {
    * @param {String} title
    * @param {String} description
    */
-  constructor(category, subject, title, description) {
+  constructor(userID, category, subject, title, description) {
     this._id = new ObjectId();
+    this.userID = userID;
     // this.category = category;
-    this.subject = subject;
+    // this.subject = subject;
     this.title = title;
     this.description = description;
-    this.numEndorsements = [];
-    this.endorsements = [];
+    // this.numEndorsements = [];
+    // this.endorsements = [];
   }
 }
 

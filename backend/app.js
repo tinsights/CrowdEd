@@ -10,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/users", require("./routes/userRoutes"));
+app.use("/skills", require("./routes/skillRoutes"));
 
 app.use(errorHandler);
 app.listen(PORT, () => console.log(`Server started on http://localhost:${PORT}`));
