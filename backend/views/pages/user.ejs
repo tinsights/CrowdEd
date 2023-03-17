@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head'); %>
+  </head>
+  <body class="container-fluid">
+    <header><%- include('../partials/nav'); %></header>
+    <main class="container">
+      <h1 class="h1 display1 text-center">CrowdEd</h1>
+      <div class="container-sm py-3">
+        <h2 class="h2 display-2">User Profile</h3>
+        <div class="container-sm">
+          <ul class="list-group">
+            <li class="list-group-item">id: <%= user._id %></li>
+            <li class="list-group-item">name: <%= user.name %></li>
+            <li class="list-group-item">email: <%= user.email %></li>
+            <li class="list-group-item">location: <%= user.location %></li>
+          </ul>
+          <div class="mt-3">
+            <button class="btn btn-warning">Update</button>
+          <button class="btn btn-danger">Delete</button>
+  
+          <div class="container-sm mt-3">
+          <h3>Skills</h3>
+          <% if (user.skills.length === 0) { %>
+            <p>No Skills Yet</p>
+
+            <%} else { user.skills.forEach(skill => { %>
+          <ol class="list-group">
+
+              <li class="list-group-item"><%= skill._id %></li>
+              <li class="list-group-item"><%= skill.title %></li>
+              <li class="list-group-item"><%= skill.description %></li>
+          </ol>
+               
+              <% })} %>
+        </div>
+        <div>
+          <h3>Add new Skill</h3>
+          <% const userid = user._id %>
+          <%- include('../partials/createSkillForm', {userid} ) %>
+        </div>
+      </div>
+    </main>
+    <%- include('../partials/cdn'); %>
+  </body>
+</html>
