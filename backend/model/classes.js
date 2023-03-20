@@ -14,7 +14,7 @@ class User {
     this.name = name;
     this.email = email;
     this.location = location;
-    this.skills = [];
+    this.skills = []; // skillID, skill title.
     // this.inbox = [];
     // this.outbox = [];
   }
@@ -29,15 +29,16 @@ class Skill {
    * @param {String} title
    * @param {String} description
    */
-  constructor(userID, title, description) {
+  constructor(userID, teacherName, title, description, location) {
     this._id = new ObjectId();
     this.userID = userID;
+    this.teacherName = teacherName;
     // this.category = category;
     // this.subject = subject;
     this.title = title;
     this.description = description;
-    // this.numEndorsements = [];
-    // this.endorsements = [];
+    this.locations = [location];
+    this.endorsements = [];
   }
 }
 

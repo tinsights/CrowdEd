@@ -6,8 +6,8 @@
   <body class="container-fluid">
     <header><%- include('../partials/nav'); %></header>
     <main class="container">
-      <h1 class="h1 display1 text-center">CrowdEd</h1>
       <div class="container-sm">
+        <%- include('../partials/registerForm') %>
         <h3 class="h3 display3">Users</h3>
         <div class="row g-5">
           <% users.forEach(user => { %>

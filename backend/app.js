@@ -5,6 +5,7 @@ const path = require("path");
 const dotenv = require("dotenv").config();
 const PORT = process.env.PORT || 8888;
 const { errorHandler } = require("./middleware/errorMiddleware");
+const cors = require("cors");
 const app = express();
 
 app.use(express.json());
@@ -16,7 +17,9 @@ app.use("/:mode/users", require("./routes/userRoutes"));
 app.use("/:mode/skills", require("./routes/skillRoutes"));
 
 app.get("/", (req, res) => {
-  console.log(req.params);
+  res.redirect("/register");
+});
+app.get("/register", (req, res) => {
   res.render("pages/index.ejs");
 });
 

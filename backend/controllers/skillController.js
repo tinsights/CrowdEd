@@ -31,14 +31,14 @@ function getSkillById(req, res) {
     .readFile(usersFile)
     .then((users) => {
       const user = users[users.findIndex((u) => u._id === userid)];
-      const skill = user[user.skills.findIndex((s) => s._id === skillid)];
+      const skill = user.skills[user.skills.findIndex((s) => s._id === skillid)];
       switch (req.params.mode) {
         case "view":
           res.status(200).render("pages/skill.ejs", { user, skill });
           break;
         case "api":
         default:
-          res.status(200).json({ user, skill });
+          res.status(200).json({ skill });
           break;
       }
     })
