@@ -26,9 +26,9 @@
 
               <%} else { user.skills.forEach(skill => { %>
               <ol class="list-group">
-                <li class="list-group-item"><%= skill._id %></li>
-                <li class="list-group-item"><%= skill.title %></li>
-                <li class="list-group-item"><%= skill.description %></li>
+                <li class="list-group-item">
+                  <%= skill.title %> <a href="/view/skills/<%=skill._id%>" class="btn btn-primary">View Skill</a>
+                </li>
               </ol>
 
               <% })} %>

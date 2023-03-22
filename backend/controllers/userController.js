@@ -1,5 +1,5 @@
-const jsonfile = require("jsonfile");
 const { User, Skill } = require("../model/classes");
+const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 
 const usersFile = "./backend/public/data/users.json";
@@ -10,9 +10,6 @@ async function getUsers(req, res) {
     .collection("users")
     .find({})
     .toArray()
-    .then((users) => console.log(users));
-  jsonfile
-    .readFile(usersFile)
     .then((users) => {
       switch (req.params.mode) {
         case "view":
@@ -40,26 +37,19 @@ function addUser(req, res) {
     throw new Error("Invalid Form");
   } else {
     const newUser = new User(name, email, location);
-    jsonfile
-      .readFile(usersFile)
-      .then((users) => {
-        users.push(newUser);
-        jsonfile.writeFile(usersFile, users, (err) => {
-          if (err) {
-            res.status(500);
-            throw new Error(err);
-          } else {
-            switch (req.params.mode) {
-              case "view":
-                res.status(200).redirect("/view/users");
-                break;
-              case "api":
-              default:
-                res.status(200).json(users);
-                break;
-            }
-          }
-        });
+    db.get()
+      .collection("users")
+      .insertOne(newUser)
+      .then((result) => {
+        switch (req.params.mode) {
+          case "view":
+            res.status(200).redirect("/view/users");
+            break;
+          case "api":
+          default:
+            res.status(200).json(result);
+            break;
+        }
       })
       .catch((err) => {
         throw new Error(err);
@@ -69,20 +59,21 @@ function addUser(req, res) {
 
 function getUserById(req, res) {
   const userID = req.params.id;
-  console.log(userID);
-  jsonfile
-    .readFile(usersFile)
-    .then((users) => {
-      const userToDisplay = users[users.findIndex((user) => user._id === userID)];
+  db.get()
+    .collection("users")
+    .findOne({
+      _id: new ObjectId(userID),
+    })
+    .then((result) => {
       switch (req.params.mode) {
         case "view":
           res.status(200).render("pages/user.ejs", {
-            user: userToDisplay,
+            user: result,
           });
           break;
         case "api":
         default:
-          res.status(200).json(userToDisplay);
+          res.status(200).json(result);
           break;
       }
     })
@@ -95,91 +86,112 @@ function getUserById(req, res) {
 function updateUser(req, res) {
   const payload = req.body;
   const { name, email, location } = payload;
-  if (!name || !email || !location) {
+  if (!name || !email || !location || !skills) {
     res.status(400);
     throw new Error("Invalid Form");
   }
   const idToUpdate = req.params.id;
-  const updatedUser = new User(name, email, location);
-  jsonfile
-    .readFile(usersFile)
-    .then((users) => {
-      const indexToUpdate = users.findIndex((user) => user._id === idToUpdate);
-      const updatedUsers = [...users.slice(0, indexToUpdate), updatedUser, ...users.slice(indexToUpdate + 1)];
-      jsonfile.writeFile(usersFile, updatedUsers, (err) => {
-        if (err) {
-          res.status(500);
-          throw new Error(err);
-        }
-        res.status(200).json(updatedUsers);
-      });
+  db.get()
+    .collection("users")
+    .updateOne(
+      {
+        _id: new ObjectId(idToUpdate),
+      },
+      {
+        $set: {
+          name,
+          email,
+          location,
+          skills,
+        },
+      }
+    )
+    .then((result) => {
+      switch (req.params.mode) {
+        case "view":
+          res.status(200).render("pages/user.ejs", {
+            user: result,
+          });
+          break;
+        case "api":
+        default:
+          res.status(200).json(result);
+          break;
+      }
     })
-    .catch((err) => {});
+    .catch((err) => {
+      res.status(500);
+      throw new Error(err);
+    });
 }
 
 function deleteUser(req, res) {
-  console.log("params id to delete", req.params.id);
-  const idToDelete = req.params.id;
-  jsonfile
-    .readFile(usersFile)
-    .then((users) => {
-      const indexToDelete = users.findIndex((user) => user._id === idToDelete);
-      const updatedUsers = [...users.slice(0, indexToDelete), ...users.slice(indexToDelete + 1)];
-      jsonfile.writeFile(usersFile, updatedUsers, (err) => {
-        if (err) {
-          res.status(500);
-          throw new Error(err);
-        }
-        res.status(200).json(updatedUsers);
-      });
-    })
-    .catch((err) => {});
+  const userIdToDelete = new ObjectId(req.params.id);
+  try {
+    const deleteUser = db.get().collection("users").deleteOne({
+      _id: userIdToDelete,
+    });
+    const deleteSkills = db.get().collection("skills").deleteMany({
+      userID: userIdToDelete,
+    });
+    Promise.all([deleteUser, deleteSkills]).then((result) => res.status(200).json(result));
+  } catch (err) {
+    res.status(500);
+    throw new Error(err);
+  }
 }
 
-function createSkillForUser(req, res) {
+async function createSkillForUser(req, res) {
   const payload = req.body;
   const { title, description } = payload;
-  const userID = req.params.id;
+  const userID = new ObjectId(req.params.id);
 
   if (!title || !description) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
-    const newSkill = new Skill(userID, title, description);
-    jsonfile.readFile(skillsFile).then((skills) => {
-      const updatedSkills = [...skills, newSkill];
-      jsonfile.writeFile(skillsFile, updatedSkills, (err) => {
-        if (err) {
-          res.status(500);
-          throw new Error(err);
-        }
-      });
+    // get the user details and store in variable
+    const user = await db.get().collection("users").findOne({
+      _id: userID,
     });
-    // read users, create skills for user with :id
-    jsonfile
-      .readFile(usersFile)
-      .then((users) => {
-        const updatedUsers = users.slice();
-        const indexToUpdate = updatedUsers.findIndex((user) => user._id === userID);
-        updatedUsers[indexToUpdate].skills.push(newSkill);
-        jsonfile.writeFile(usersFile, updatedUsers, (err) => {
-          if (err) {
-            res.status(500);
-            throw new Error(err);
-          }
-          switch (req.params.mode) {
-            case "view":
-              res.status(200).redirect(`/view/users/${userID}`);
-              break;
-            case "api":
-            default:
-              res.status(200).json(updatedUsers[indexToUpdate]);
-              break;
-          }
-        });
-      })
-      .catch((err) => {
-        throw new Error(err);
+
+    // write to skills collection
+    const newSkill = await db.get().collection("skills").insertOne({
+      userID,
+      teacherName: user.name,
+      title,
+      description,
+    });
+    console.log(newSkill);
+    // update user with new skillid reference
+    db.get()
+      .collection("users")
+      .findOneAndUpdate(
+        { _id: userID },
+        {
+          $push: {
+            skills: {
+              _id: newSkill.insertedId,
+              title: title,
+            },
+          },
+        },
+        {
+          returnDocument: "after",
+        }
+      )
+      .then((result) => {
+        switch (req.params.mode) {
+          case "view":
+            res.status(200).render("pages/user.ejs", {
+              user: result.value,
+            });
+            break;
+          case "api":
+          default:
+            res.status(200).json(result);
+            break;
+        }
       });
   }
 }

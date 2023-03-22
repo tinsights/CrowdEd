@@ -7,7 +7,6 @@ const db = require("./config/MongoUtil");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const cors = require("cors");
 const app = express();
-require("./config/db.js");
 
 const PORT = process.env.PORT || 8888;
 

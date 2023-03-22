@@ -4,11 +4,8 @@ const jsonfile = require("jsonfile");
 
 const { getSkills, getSkillById } = require("../controllers/skillController");
 
-const usersFile = "./backend/public/data/users.json";
-const skillsFile = "./backend/public/data/skills.json";
-
 router.get("/", getSkills);
-router.get("/:userid/:skillid", getSkillById);
+router.get("/:skillid", getSkillById);
 
 router.post("/", (req, res) => {
   res.status(200).json({ message: "Create Skill" });

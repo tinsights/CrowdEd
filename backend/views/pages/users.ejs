@@ -18,7 +18,7 @@
                 <div class="card-text">
                   <p>Skills:</p>
                   <ol>
-                    <% user.skills.forEach(skill => { %>
+                    <% user.skills?.forEach(skill => { %>
                     <li><%= skill.title %></li>
                     <% }) %>
                   </ol>

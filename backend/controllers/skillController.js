@@ -1,25 +1,30 @@
 const jsonfile = require("jsonfile");
 const { User, Skill } = require("../model/classes");
+const ObjectId = require("mongodb").ObjectId;
+const db = require("../config/MongoUtil");
 
 const usersFile = "./backend/public/data/users.json";
 const skillsFile = "./backend/public/data/skills.json";
 
 function getSkills(req, res) {
-  jsonfile
-    .readFile(usersFile)
-    .then((users) => {
+  db.get()
+    .collection("skills")
+    .find({})
+    .toArray()
+    .then((skills) => {
       switch (req.params.mode) {
         case "view":
-          res.status(200).render("pages/skills.ejs", { users });
+          res.status(200).render("pages/skills.ejs", {
+            skills,
+          });
           break;
         case "api":
         default:
-          res.status(200).json(users);
+          res.status(200).json(skills);
           break;
       }
     })
     .catch((err) => {
-      console.log(err);
       res.status(500);
       throw new Error(err);
     });
@@ -27,14 +32,13 @@ function getSkills(req, res) {
 
 function getSkillById(req, res) {
   const { userid, skillid } = req.params;
-  jsonfile
-    .readFile(usersFile)
-    .then((users) => {
-      const user = users[users.findIndex((u) => u._id === userid)];
-      const skill = user.skills[user.skills.findIndex((s) => s._id === skillid)];
+  db.get()
+    .collection("skills")
+    .findOne({ _id: new ObjectId(skillid) })
+    .then((skill) => {
       switch (req.params.mode) {
         case "view":
-          res.status(200).render("pages/skill.ejs", { user, skill });
+          res.status(200).render("pages/skill.ejs", { skill });
           break;
         case "api":
         default:
@@ -42,6 +46,7 @@ function getSkillById(req, res) {
           break;
       }
     })
+
     .catch((err) => {
       console.log(err);
       res.status(500);

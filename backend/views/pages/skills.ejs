@@ -9,21 +9,20 @@
       <div class="container-sm">
         <h3 class="h3 display3">Skills</h3>
         <div class="row g-5">
-          <% users.forEach(user => { %> <% user.skills.forEach(skill => { %>
+          <% skills.forEach(skill => { %>
           <div class="col-6 col-sm-4 col-lg-3 mb-3">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"><%= skill.title %></h5>
                 <div class="card-text">
                   <p>Description: <%= skill.description %></p>
-                  <p>Location: <%= user.location %></p>
-                  <a href="/view/users/<%=user._id%>" class="btn btn-secondary">View User</a>
+                  <a href="/view/users/<%=skill.userID%>" class="btn btn-secondary">View User</a>
                   <a href="/view/skills/<%=skill._id%>" class="btn btn-primary">Skill Info</a>
                 </div>
               </div>
             </div>
           </div>
-          <% }) %> <% }) %>
+          <% }) %>
         </div>
       </div>
     </main>

@@ -12,16 +12,15 @@
         <ul class="list-group">
           <li class="list-group-item">id: <%= skill._id %></li>
           <li class="list-group-item">description: <%= skill.description %></li>
-          <li class="list-group-item">location: <%= user.location %></li>
         </ul>
       </div>
       <div class="container-sm py-3">
         <h3>Teacher Info</h3>
         <ul class="list-group">
-          <li class="list-group-item">id: <%= user._id %></li>
-          <li class="list-group-item">name: <%= user.name %></li>
-          <li class="list-group-item">email: <%= user.email %></li>
-          <li class="list-group-item">location: <%= user.location %></li>
+          <li class="list-group-item">
+            Name: <%= skill.teacherName %>
+            <a href="/view/users/<%=skill.userID%>" class="btn btn-secondary">View User</a>
+          </li>
         </ul>
       </div>
     </main>
