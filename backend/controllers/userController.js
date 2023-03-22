@@ -1,10 +1,16 @@
 const jsonfile = require("jsonfile");
 const { User, Skill } = require("../model/classes");
+const db = require("../config/MongoUtil");
 
 const usersFile = "./backend/public/data/users.json";
 const skillsFile = "./backend/public/data/skills.json";
 
-function getUsers(req, res) {
+async function getUsers(req, res) {
+  db.get()
+    .collection("users")
+    .find({})
+    .toArray()
+    .then((users) => console.log(users));
   jsonfile
     .readFile(usersFile)
     .then((users) => {

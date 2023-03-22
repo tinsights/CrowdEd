@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+
 const {
   getUserById,
   getUsers,
@@ -10,6 +11,14 @@ const {
 } = require("../controllers/userController");
 
 router.route("/").get(getUsers).post(addUser);
+
+router.get("/", async (req, res) => {
+  const results = await db.collection("users").insertOne({
+    description: description,
+    food: food,
+    datetime: datetime,
+  });
+});
 
 router.route("/:id").get(getUserById).put(updateUser).delete(deleteUser);
 
