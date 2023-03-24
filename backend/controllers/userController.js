@@ -2,9 +2,6 @@ const { User, Skill } = require("../model/classes");
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 
-const usersFile = "./backend/public/data/users.json";
-const skillsFile = "./backend/public/data/skills.json";
-
 async function getUsers(req, res) {
   db.get()
     .collection("users")

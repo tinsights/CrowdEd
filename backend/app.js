@@ -1,6 +1,5 @@
 const { urlencoded } = require("express");
 const express = require("express");
-const jsonfile = require("jsonfile");
 const path = require("path");
 const dotenv = require("dotenv").config();
 const db = require("./config/MongoUtil");
