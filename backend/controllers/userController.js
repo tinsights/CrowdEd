@@ -162,7 +162,6 @@ async function createSkillForUser(req, res) {
       title,
       description,
     });
-    console.log(newSkill);
     // update user with new skillid reference
     db.get()
       .collection("users")

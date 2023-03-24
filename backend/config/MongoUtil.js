@@ -18,12 +18,17 @@ function get() {
   return mongodb;
 }
 
+function getClient() {
+  return client;
+}
+
 function close() {
   mongodb.close();
 }
 
 module.exports = {
   connect,
+  getClient,
   get,
   close,
 };

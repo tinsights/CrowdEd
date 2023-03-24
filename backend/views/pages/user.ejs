@@ -25,11 +25,15 @@
               <p>No Skills Yet</p>
 
               <%} else { user.skills.forEach(skill => { %>
-              <ol class="list-group">
-                <li class="list-group-item">
-                  <%= skill.title %> <a href="/view/skills/<%=skill._id%>" class="btn btn-primary">View Skill</a>
-                </li>
-              </ol>
+
+              <div class="card">
+                <h5 class="card-header"><%= skill.title %></h5>
+                <div class="card-body">
+                  <h5 class="card-title">TODO: description?</h5>
+                  <p class="card-text">TODO: tags?</p>
+                  <a href="/view/skills/<%=skill._id%>" class="btn btn-primary">View Skill</a>
+                </div>
+              </div>
 
               <% })} %>
             </div>

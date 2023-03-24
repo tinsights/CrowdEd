@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
-const jsonfile = require("jsonfile");
 
 const { getSkills, getSkillById } = require("../controllers/skillController");
 
