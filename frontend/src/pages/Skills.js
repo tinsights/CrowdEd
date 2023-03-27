@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Users() {
-  const [users, setUsers] = useState([]);
+  const [skills, setSkills] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:5005/api/users").then((response) => {
-      setUsers(response.data);
+    axios.get("http://localhost:5005/api/skills").then((response) => {
+      console.log(response.data);
+      setSkills(response.data);
     });
   }, []); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
 
@@ -21,36 +22,37 @@ export default function Users() {
 
   return (
     <>
-      <h2>All Users</h2>
+      <h2>All Skills</h2>
       <div className="row g-5">
-        {users.map((u) => (
-          <React.Fragment key={u._id}>
+        {skills.map((s) => (
+          <React.Fragment key={s._id}>
             <div className="col-6 col-sm-4 col-lg-3 mb-3">
-              <div className="card">
+              <div
+                className="card"
+                onClick={() => {
+                  goToSkill(s._id);
+                }}
+              >
                 <div className="card-body">
                   <h3
                     className="card-title"
                     onClick={() => {
-                      goToUser(u._id);
+                      goToSkill(s._id);
                     }}
                   >
-                    {u.name}
+                    {s.title}
                   </h3>
                   <div className="card-text">
-                    <p>Skills:</p>
-                    <ol>
-                      {u.skills?.map((s) => (
-                        <React.Fragment key={s._id}>
-                          <li
-                            onClick={() => {
-                              goToSkill(s._id);
-                            }}
-                          >
-                            {s.title}
-                          </li>
-                        </React.Fragment>
-                      ))}
-                    </ol>
+                    <p>{s.description}</p>
+                  </div>
+                  <div class="card-footer">
+                    <p
+                      onClick={() => {
+                        goToUser(s.userID);
+                      }}
+                    >
+                      {s.teacherName}
+                    </p>
                   </div>
                 </div>
               </div>

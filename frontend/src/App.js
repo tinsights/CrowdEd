@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-do
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
+import Skills from "./pages/Skills";
 
 function App() {
   return (
@@ -37,7 +38,7 @@ function App() {
           {/* Home route */}
           <Route path="/" element={<Home />} />
           <Route path="/users" element={<Users />} />
-          {/* <Route path="/skills" element={<Skills />} /> */}
+          <Route path="/skills" element={<Skills />} />
         </Routes>
       </div>
     </Router>
