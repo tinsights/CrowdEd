@@ -3,7 +3,9 @@ import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-do
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
+import UserProfilePage from "./pages/UserProfilePage";
 import Skills from "./pages/Skills";
+import SkillPage from "./pages/SkillPage";
 
 function App() {
   return (
@@ -12,7 +14,6 @@ function App() {
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
         <nav className="navbar navbar-expand-sm bg-light">
           <div className="container-fluid">
-            {/* Links */}
             <ul className="navbar-nav">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
@@ -35,10 +36,15 @@ function App() {
       </header>
       <div className="container">
         <Routes>
-          {/* Home route */}
           <Route path="/" element={<Home />} />
-          <Route path="/users" element={<Users />} />
-          <Route path="/skills" element={<Skills />} />
+          <Route path="/users">
+            <Route path="/users/:userId" element={<UserProfilePage />} />
+            <Route path="/users/" element={<Users />} />
+          </Route>
+          <Route path="/skills">
+            <Route path="/skills/" element={<Skills />} />
+            <Route path="/skills/:skillId" element={<SkillPage />} />
+          </Route>
         </Routes>
       </div>
     </Router>

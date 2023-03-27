@@ -13,10 +13,10 @@ export default function Users() {
   const navigate = useNavigate();
 
   function goToUser(id) {
-    navigate(`/user/${id}`);
+    navigate(`/users/${id}`);
   }
   function goToSkill(id) {
-    navigate(`/skill/${id}`);
+    navigate(`/skills/${id}`);
   }
 
   return (

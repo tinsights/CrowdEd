@@ -14,10 +14,10 @@ export default function Users() {
   const navigate = useNavigate();
 
   function goToUser(id) {
-    navigate(`/user/${id}`);
+    navigate(`/users/${id}`);
   }
   function goToSkill(id) {
-    navigate(`/skill/${id}`);
+    navigate(`/skills/${id}`);
   }
 
   return (
@@ -27,13 +27,13 @@ export default function Users() {
         {skills.map((s) => (
           <React.Fragment key={s._id}>
             <div className="col-6 col-sm-4 col-lg-3 mb-3">
-              <div
-                className="card"
-                onClick={() => {
-                  goToSkill(s._id);
-                }}
-              >
-                <div className="card-body">
+              <div className="card">
+                <div
+                  className="card-body"
+                  onClick={() => {
+                    goToSkill(s._id);
+                  }}
+                >
                   <h3
                     className="card-title"
                     onClick={() => {
@@ -45,15 +45,15 @@ export default function Users() {
                   <div className="card-text">
                     <p>{s.description}</p>
                   </div>
-                  <div class="card-footer">
-                    <p
-                      onClick={() => {
-                        goToUser(s.userID);
-                      }}
-                    >
-                      {s.teacherName}
-                    </p>
-                  </div>
+                </div>
+                <div className="card-footer">
+                  <p
+                    onClick={() => {
+                      goToUser(s.userID);
+                    }}
+                  >
+                    {s.teacherName}
+                  </p>
                 </div>
               </div>
             </div>
