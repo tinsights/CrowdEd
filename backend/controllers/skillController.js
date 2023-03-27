@@ -42,7 +42,7 @@ function getSkillById(req, res) {
           break;
         case "api":
         default:
-          res.status(200).json({ skill });
+          res.status(200).json(skill);
           break;
       }
     })
