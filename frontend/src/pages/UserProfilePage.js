@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import AddSkillForm from "../components/AddSkillForm";
 import EditUserForm from "../components/EditUserForm";
 
@@ -78,7 +78,7 @@ export default function UserProfilePage() {
           </div>
         </div>
         <div>
-          <AddSkillForm />
+          <AddSkillForm location={user.location} />
         </div>
       </div>
     </>

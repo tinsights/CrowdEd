@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function AddSkillForm() {
+export default function AddSkillForm({ location }) {
   const navigate = useNavigate();
   const { userId } = useParams();
   console.log(userId);
@@ -13,6 +13,7 @@ export default function AddSkillForm() {
   const [skill, setSkill] = useState({
     title: "",
     description: "",
+    location: location,
   });
   function handleSubmit(e) {
     e.preventDefault();
@@ -65,6 +66,19 @@ export default function AddSkillForm() {
             placeholder="Skill Description"
             value={skill.description}
             onChange={(e) => handleFormChange(e)}
+          />
+        </fieldset>
+        <fieldset className="mb-3">
+          <label htmlFor="location" className="form-label">
+            Location
+          </label>
+          <input
+            className="form-control"
+            name="location"
+            id="location"
+            value={skill.location}
+            onChange={(e) => handleFormChange(e)}
+            disabled
           />
         </fieldset>
         <div className="d-flex justify-content-end">

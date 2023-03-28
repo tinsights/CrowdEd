@@ -69,7 +69,7 @@ export default function SignUpForm() {
         </fieldset>
         <fieldset className="mb-3">
           <label htmlFor="location" className="form-label">
-            Post Code
+            Location
           </label>
           <input
             className="form-control"

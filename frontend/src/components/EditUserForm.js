@@ -65,7 +65,7 @@ export default function EditUserForm({ user, onSubmit }) {
         </fieldset>
         <fieldset className="mb-3">
           <label htmlFor="location" className="form-label">
-            Post Code
+            Location
           </label>
           <input
             className="form-control"
