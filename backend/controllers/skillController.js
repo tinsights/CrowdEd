@@ -1,10 +1,6 @@
-const jsonfile = require("jsonfile");
 const { User, Skill } = require("../model/classes");
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
-
-const usersFile = "./backend/public/data/users.json";
-const skillsFile = "./backend/public/data/skills.json";
 
 function getSkills(req, res) {
   db.get()
@@ -31,7 +27,7 @@ function getSkills(req, res) {
 }
 
 function getSkillById(req, res) {
-  const { userid, skillid } = req.params;
+  const { skillid } = req.params;
   db.get()
     .collection("skills")
     .findOne({ _id: new ObjectId(skillid) })
