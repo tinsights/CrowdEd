@@ -2,25 +2,22 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUpForm() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [location, setLocation] = useState("");
+export default function EditUserForm({ user, onSubmit }) {
+  const [userFormData, setUserFormData] = useState(user);
   const navigate = useNavigate();
 
-  function handleSubmit(e, stateData) {
-    console.log(stateData);
+  function handleFormChange(e) {
+    setUserFormData({ ...userFormData, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
     // post to backend user data
-
     axios
-      .post("http://localhost:5005/api/users", stateData)
+      .put(`http://localhost:5005/api/users/${user._id}`, userFormData)
       .then(function (response) {
         console.log(response);
-        // grab the user id from the response
-        const userId = response.data.insertedId;
-        // redirect to user page
-        navigate(`/users/${userId}`);
+        onSubmit();
       })
       .catch(function (error) {
         console.log(error);
@@ -29,11 +26,10 @@ export default function SignUpForm() {
 
   return (
     <>
-      <h1>Sign Up</h1>
       <form
         method="POST"
         onSubmit={(e) => {
-          handleSubmit(e, { name, email, location });
+          handleSubmit(e);
         }}
       >
         <fieldset className="mb-3">
@@ -46,8 +42,8 @@ export default function SignUpForm() {
             name="name"
             id="name"
             placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={userFormData.name}
+            onChange={(e) => handleFormChange(e)}
           />
         </fieldset>
         <fieldset className="mb-3">
@@ -60,8 +56,8 @@ export default function SignUpForm() {
             name="email"
             id="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={userFormData.email}
+            onChange={(e) => handleFormChange(e)}
           />
           <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
@@ -76,8 +72,8 @@ export default function SignUpForm() {
             name="location"
             id="location"
             placeholder="Post Code"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={userFormData.location}
+            onChange={(e) => handleFormChange(e)}
           />
         </fieldset>
         <div className="d-flex justify-content-end">
