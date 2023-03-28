@@ -22,41 +22,43 @@ export default function Users() {
   return (
     <>
       <h2>All Users</h2>
-      <div className="row g-5">
-        {users.map((u) => (
-          <React.Fragment key={u._id}>
-            <div className="col-6 col-sm-4 col-lg-3 mb-3">
-              <div className="card">
-                <div className="card-body">
-                  <h3
-                    className="card-title"
-                    onClick={() => {
-                      goToUser(u._id);
-                    }}
-                  >
-                    {u.name}
-                  </h3>
-                  <div className="card-text">
-                    <p>Skills:</p>
-                    <ol>
-                      {u.skills?.map((s) => (
-                        <React.Fragment key={s._id}>
-                          <li
-                            onClick={() => {
-                              goToSkill(s._id);
-                            }}
-                          >
-                            {s.title}
-                          </li>
-                        </React.Fragment>
-                      ))}
-                    </ol>
+      <div className="container">
+        <div className="row row-cols-1 row-cols-md-3 g-4">
+          {users.map((u) => (
+            <React.Fragment key={u._id}>
+              <div className="col">
+                <div className="card h-100">
+                  <div className="card-body">
+                    <h3
+                      className="card-title"
+                      onClick={() => {
+                        goToUser(u._id);
+                      }}
+                    >
+                      {u.name}
+                    </h3>
+                    <div className="card-text">
+                      <p>Skills:</p>
+                      <ol>
+                        {u.skills?.map((s) => (
+                          <React.Fragment key={s._id}>
+                            <li
+                              onClick={() => {
+                                goToSkill(s._id);
+                              }}
+                            >
+                              {s.title}
+                            </li>
+                          </React.Fragment>
+                        ))}
+                      </ol>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </React.Fragment>
-        ))}
+            </React.Fragment>
+          ))}
+        </div>
       </div>
     </>
   );

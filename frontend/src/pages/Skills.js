@@ -23,11 +23,11 @@ export default function Users() {
   return (
     <>
       <h2>All Skills</h2>
-      <div className="row g-5">
+      <div className="row row-cols-1 row-cols-md-3 g-4">
         {skills.map((s) => (
           <React.Fragment key={s._id}>
-            <div className="col-6 col-sm-4 col-lg-3 mb-3">
-              <div className="card">
+            <div className="col">
+              <div className="card h-100">
                 <div
                   className="card-body"
                   onClick={() => {
