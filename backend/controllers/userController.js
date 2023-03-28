@@ -141,12 +141,12 @@ function deleteUser(req, res) {
 async function createSkillForUser(req, res) {
   const payload = req.body;
   console.log(payload);
-  const { title, description } = payload;
+  const { title, description, location } = payload;
   console.log(req.params.id);
 
   const userID = new ObjectId(req.params.id);
 
-  if (!title || !description) {
+  if (!title || !description || !location) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
@@ -161,6 +161,7 @@ async function createSkillForUser(req, res) {
       teacherName: user.name,
       title,
       description,
+      location,
     });
     // update user with new skillid reference
     db.get()
