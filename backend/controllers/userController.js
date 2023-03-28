@@ -83,7 +83,7 @@ function getUserById(req, res) {
 function updateUser(req, res) {
   const payload = req.body;
   const { name, email, location } = payload;
-  if (!name || !email || !location || !skills) {
+  if (!name || !email || !location) {
     res.status(400);
     throw new Error("Invalid Form");
   }
@@ -99,11 +99,11 @@ function updateUser(req, res) {
           name,
           email,
           location,
-          skills,
         },
       }
     )
     .then((result) => {
+      console.log(result);
       switch (req.params.mode) {
         case "view":
           res.status(200).render("pages/user.ejs", {
@@ -140,7 +140,10 @@ function deleteUser(req, res) {
 
 async function createSkillForUser(req, res) {
   const payload = req.body;
+  console.log(payload);
   const { title, description } = payload;
+  console.log(req.params.id);
+
   const userID = new ObjectId(req.params.id);
 
   if (!title || !description) {
@@ -168,7 +171,8 @@ async function createSkillForUser(req, res) {
           $push: {
             skills: {
               _id: newSkill.insertedId,
-              title: title,
+              title,
+              description,
             },
           },
         },
@@ -185,7 +189,7 @@ async function createSkillForUser(req, res) {
             break;
           case "api":
           default:
-            res.status(200).json(result);
+            res.status(200).json({ ...newSkill, ...result });
             break;
         }
       });
