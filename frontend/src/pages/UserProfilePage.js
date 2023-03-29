@@ -41,7 +41,7 @@ export default function UserProfilePage() {
               <ul className="list-group">
                 <li className="list-group-item">name: {user.name}</li>
                 <li className="list-group-item">email: {user.email}</li>
-                <li className="list-group-item">location: {user.location}</li>
+                <li className="list-group-item">location: {user.location?.SEARCHVAL}</li>
               </ul>
               <div className="mt-3 d-flex justify-content-end">
                 <button onClick={() => setIsEditingUser(true)} className="btn btn-warning">
@@ -57,7 +57,7 @@ export default function UserProfilePage() {
         </div>
         <div className="container-sm mt-3">
           <h3>Skills</h3>
-          {user.skills.length > 0 && (
+          {user.skills?.length > 0 && (
             <div className="row row-cols-1 row-cols-md-3 g-4">
               {user.skills.map((s) => (
                 <div className="col" key={s._id}>
@@ -81,7 +81,7 @@ export default function UserProfilePage() {
           )}
 
           {isAddingNewSkill && (
-            <AddSkillForm location={user.location} handleComplete={() => setIsAddingNewSkill(false)} />
+            <AddSkillForm location={user.location.POSTAL} handleComplete={() => setIsAddingNewSkill(false)} />
           )}
           {!isAddingNewSkill && (
             <div className="mt-3 d-flex justify-content-end">

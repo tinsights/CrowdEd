@@ -5,6 +5,10 @@ import { useNavigate } from "react-router-dom";
 export default function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [addressQuery, setAddressQuery] = useState({
+    postCode: "",
+    results: [],
+  });
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
 
@@ -25,6 +29,19 @@ export default function SignUpForm() {
       .catch(function (error) {
         console.log(error);
       });
+  }
+
+  function checkAddress() {
+    axios
+      .get(
+        `https://developers.onemap.sg/commonapi/search?searchVal=${addressQuery.postCode}&returnGeom=Y&getAddrDetails=Y`
+      )
+      .then((response) => {
+        console.log(response.data.results);
+        setAddressQuery({ ...addressQuery, results: response.data.results });
+        setLocation(response.data.results[0].SEARCHVAL);
+      })
+      .catch((err) => console.error(err));
   }
 
   return (
@@ -73,12 +90,26 @@ export default function SignUpForm() {
           </label>
           <input
             className="form-control"
-            name="location"
-            id="location"
+            name="postCode"
+            id="postCode"
             placeholder="Post Code"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
+            value={addressQuery.postCode}
+            onChange={(e) => setAddressQuery({ ...addressQuery, postCode: e.target.value })}
           />
+          <button type="button" className="btn btn-secondary" onClick={checkAddress}>
+            Check Address
+          </button>
+          <select
+            onChange={(e) => {
+              const selectedLocation = addressQuery.results.find((result) => result.SEARCHVAL === e.target.value);
+              setLocation(selectedLocation);
+            }}
+            value={location}
+          >
+            {addressQuery.results?.map((result, idx) => (
+              <option key={result.SEARCHVAL}>{result.SEARCHVAL}</option>
+            ))}
+          </select>
         </fieldset>
         <div className="d-flex justify-content-end">
           <button type="submit" className="btn btn-primary">
