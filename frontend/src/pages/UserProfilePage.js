@@ -57,38 +57,41 @@ export default function UserProfilePage() {
         </div>
         <div className="container-sm mt-3">
           <h3>Skills</h3>
-          <div className="row row-cols-1 row-cols-md-3 g-4">
-            {user.skills?.map((s) => (
-              <div className="col" key={s._id}>
-                <div
-                  className="card h-100"
-                  onClick={() => {
-                    goToSkill(s._id);
-                  }}
-                >
-                  <div className="card-body">
-                    <h5 className="card-title">{s.title}</h5>
-                    <p className="card-text">{s.description}</p>
-                  </div>
-                  <div className="card-footer">
-                    <small className="text-muted">Last updated 3 mins ago</small>
+          {user.skills.length > 0 && (
+            <div className="row row-cols-1 row-cols-md-3 g-4">
+              {user.skills.map((s) => (
+                <div className="col" key={s._id}>
+                  <div
+                    className="card h-100"
+                    onClick={() => {
+                      goToSkill(s._id);
+                    }}
+                  >
+                    <div className="card-body">
+                      <h5 className="card-title">{s.title}</h5>
+                      <p className="card-text">{s.description}</p>
+                    </div>
+                    <div className="card-footer">
+                      <small className="text-muted">Last updated 3 mins ago</small>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
+
+          {isAddingNewSkill && (
+            <AddSkillForm location={user.location} handleComplete={() => setIsAddingNewSkill(false)} />
+          )}
+          {!isAddingNewSkill && (
+            <div className="mt-3 d-flex justify-content-end">
+              {/* create button to display AddSkillForm on click */}
+              <button className="btn btn-primary" onClick={() => setIsAddingNewSkill(true)}>
+                Add New Skill
+              </button>
+            </div>
+          )}
         </div>
-        {isAddingNewSkill && (
-          <AddSkillForm location={user.location} handleComplete={() => setIsAddingNewSkill(false)} />
-        )}
-        {!isAddingNewSkill && (
-          <div className="mt-3 d-flex justify-content-end">
-            {/* create button to display AddSkillForm on click */}
-            <button className="btn btn-primary" onClick={() => setIsAddingNewSkill(true)}>
-              Add New Skill
-            </button>
-          </div>
-        )}
       </div>
     </>
   );
