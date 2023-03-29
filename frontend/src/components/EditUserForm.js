@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function EditUserForm({ user, onSubmit }) {
+export default function EditUserForm({ user, completeEdit }) {
   const [userFormData, setUserFormData] = useState(user);
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export default function EditUserForm({ user, onSubmit }) {
       .put(`http://localhost:5005/api/users/${user._id}`, userFormData)
       .then(function (response) {
         console.log(response);
-        onSubmit();
+        completeEdit();
       })
       .catch(function (error) {
         console.log(error);
@@ -76,7 +76,16 @@ export default function EditUserForm({ user, onSubmit }) {
             onChange={(e) => handleFormChange(e)}
           />
         </fieldset>
-        <div className="d-flex justify-content-end">
+        <div className="d-flex  justify-content-end">
+          <button
+            className="btn btn-warning"
+            onClick={() => {
+              completeEdit();
+            }}
+          >
+            Cancel
+          </button>
+
           <button type="submit" className="btn btn-primary">
             Submit
           </button>

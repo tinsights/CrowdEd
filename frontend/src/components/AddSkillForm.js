@@ -1,20 +1,20 @@
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function AddSkillForm({ location }) {
+export default function AddSkillForm({ location, handleComplete }) {
   const navigate = useNavigate();
   const { userId } = useParams();
-  console.log(userId);
+  console.log(location);
 
-  const handleFormChange = (e) => {
-    setSkill({ ...skill, [e.target.name]: e.target.value });
-  };
   const [skill, setSkill] = useState({
     title: "",
     description: "",
     location: location,
   });
+  const handleFormChange = (e) => {
+    setSkill({ ...skill, [e.target.name]: e.target.value });
+  };
   function handleSubmit(e) {
     e.preventDefault();
     // post to backend user data
@@ -24,6 +24,7 @@ export default function AddSkillForm({ location }) {
         console.log(response);
         // grab the user id from the response
         const skillId = response.data.insertedId;
+        handleComplete();
         // redirect to user page
         navigate(`/skills/${skillId}`);
       })
@@ -82,6 +83,14 @@ export default function AddSkillForm({ location }) {
           />
         </fieldset>
         <div className="d-flex justify-content-end">
+          <button
+            className="btn btn-warning"
+            onClick={() => {
+              handleComplete();
+            }}
+          >
+            Cancel
+          </button>
           <button type="submit" className="btn btn-primary">
             Submit
           </button>
