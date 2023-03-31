@@ -2,16 +2,15 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function AddSkillForm({ location, handleComplete }) {
+export default function AddSkillForm({ user, handleComplete }) {
   const navigate = useNavigate();
   const { userId } = useParams();
-  console.log(location);
 
   const [skill, setSkill] = useState({
     title: "",
     description: "",
-    location: location,
   });
+
   const handleFormChange = (e) => {
     setSkill({ ...skill, [e.target.name]: e.target.value });
   };
@@ -19,7 +18,7 @@ export default function AddSkillForm({ location, handleComplete }) {
     e.preventDefault();
     // post to backend user data
     axios
-      .post(`http://localhost:5005/api/users/${userId}/skills`, skill)
+      .post(`http://localhost:5005/api/users/${userId}/skills`, { ...skill, ...user })
       .then(function (response) {
         console.log(response);
         // grab the user id from the response
@@ -69,7 +68,7 @@ export default function AddSkillForm({ location, handleComplete }) {
             onChange={(e) => handleFormChange(e)}
           />
         </fieldset>
-        <fieldset className="mb-3">
+        {/* <fieldset className="mb-3">
           <label htmlFor="location" className="form-label">
             Location
           </label>
@@ -81,7 +80,7 @@ export default function AddSkillForm({ location, handleComplete }) {
             onChange={(e) => handleFormChange(e)}
             disabled
           />
-        </fieldset>
+        </fieldset> */}
         <div className="d-flex justify-content-end">
           <button
             className="btn btn-warning"

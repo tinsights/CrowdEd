@@ -25,7 +25,6 @@ export default function SkillPage() {
     <>
       <h2>{skill.title}</h2>
       <p>{skill.description}</p>
-      <p>{skill.location}</p>
     </>
   );
 }

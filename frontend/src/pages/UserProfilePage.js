@@ -80,9 +80,7 @@ export default function UserProfilePage() {
             </div>
           )}
 
-          {isAddingNewSkill && (
-            <AddSkillForm location={user.location.POSTAL} handleComplete={() => setIsAddingNewSkill(false)} />
-          )}
+          {isAddingNewSkill && <AddSkillForm user={user} handleComplete={() => setIsAddingNewSkill(false)} />}
           {!isAddingNewSkill && (
             <div className="mt-3 d-flex justify-content-end">
               {/* create button to display AddSkillForm on click */}
