@@ -12,13 +12,16 @@ export default function SignUpForm() {
   const [location, setLocation] = useState("");
   const navigate = useNavigate();
 
-  function handleSubmit(e, stateData) {
-    console.log(stateData);
+  function handleSubmit(e) {
     e.preventDefault();
     // post to backend user data
-
+    const user = {
+      name,
+      email,
+      location,
+    };
     axios
-      .post("http://localhost:5005/api/users", stateData)
+      .post("http://localhost:5005/api/users", user)
       .then(function (response) {
         console.log(response);
         // grab the user id from the response
@@ -39,7 +42,7 @@ export default function SignUpForm() {
       .then((response) => {
         console.log(response.data.results);
         setAddressQuery({ ...addressQuery, results: response.data.results });
-        setLocation(response.data.results[0].SEARCHVAL);
+        setLocation(response.data.results[0]);
       })
       .catch((err) => console.error(err));
   }
@@ -50,7 +53,7 @@ export default function SignUpForm() {
       <form
         method="POST"
         onSubmit={(e) => {
-          handleSubmit(e, { name, email, location });
+          handleSubmit(e);
         }}
       >
         <fieldset className="mb-3">
@@ -102,9 +105,9 @@ export default function SignUpForm() {
           <select
             onChange={(e) => {
               const selectedLocation = addressQuery.results.find((result) => result.SEARCHVAL === e.target.value);
+              console.log(selectedLocation);
               setLocation(selectedLocation);
             }}
-            value={location}
           >
             {addressQuery.results?.map((result, idx) => (
               <option key={result.SEARCHVAL}>{result.SEARCHVAL}</option>
