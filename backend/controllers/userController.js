@@ -28,15 +28,19 @@ async function getUsers(req, res) {
 
 function addUser(req, res) {
   const payload = req.body;
-  const { name, email, location } = payload;
-  if (!name || !email || !location) {
+  const { name, email, location, password } = payload;
+  if (!name || !email || !location || !password) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
-    const newUser = new User(name, email, location);
     db.get()
       .collection("users")
-      .insertOne(newUser)
+      .insertOne({
+        name,
+        email,
+        location,
+        password,
+      })
       .then((result) => {
         switch (req.params.mode) {
           case "view":
@@ -197,6 +201,30 @@ async function createSkillForUser(req, res) {
   }
 }
 
+async function userLogin(req, res) {
+  const payload = req.body;
+  const { email, password } = payload;
+  if (!email || !password) {
+    res.status(400);
+    throw new Error("Invalid Form");
+  } else {
+    const user = await db.get().collection("users").findOne({
+      email,
+    });
+    if (user) {
+      if (user.password === password) {
+        res.status(200).json(user);
+      } else {
+        res.status(401);
+        throw new Error("Invalid Password");
+      }
+    } else {
+      res.status(404);
+      throw new Error("User not found");
+    }
+  }
+}
+
 module.exports = {
   getUserById,
   getUsers,
@@ -204,4 +232,5 @@ module.exports = {
   updateUser,
   deleteUser,
   createSkillForUser,
+  userLogin,
 };

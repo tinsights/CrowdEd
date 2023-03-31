@@ -7,6 +7,7 @@ import Users from "./pages/Users";
 import UserProfilePage from "./pages/UserProfilePage";
 import Skills from "./pages/Skills";
 import SkillPage from "./pages/SkillPage";
+import UserSignIn from "./pages/UserSignIn";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
         <nav className="navbar navbar-expand-sm bg-light">
           <div className="container-fluid">
-            <ul className="navbar-nav">
+            <ul className="navbar-nav w-100">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
                   Home
@@ -31,6 +32,20 @@ function App() {
                   Skills
                 </NavLink>
               </li>
+              {!localStorage.getItem("isLoggedIn") && (
+                <li className="nav-item ms-auto">
+                  <NavLink className="nav-link" to="/users/signin">
+                    Sign In
+                  </NavLink>
+                </li>
+              )}
+              {localStorage.getItem("isLoggedIn") && (
+                <li className="nav-item ms-auto">
+                  <NavLink className="nav-link" to="/users/signout">
+                    Sign Out
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
         </nav>
@@ -39,8 +54,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/users">
-            <Route path="/users/:userId" element={<UserProfilePage />} />
             <Route path="/users/" element={<Users />} />
+            <Route path="/users/:userId" element={<UserProfilePage />} />
+            <Route path="/users/signin" element={<UserSignIn />} />
           </Route>
           <Route path="/skills">
             <Route path="/skills/" element={<Skills />} />

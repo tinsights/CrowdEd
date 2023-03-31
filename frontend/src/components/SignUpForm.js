@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [addressQuery, setAddressQuery] = useState({
     postCode: "",
     results: [],
@@ -19,6 +20,7 @@ export default function SignUpForm() {
       name,
       email,
       location,
+      password,
     };
     axios
       .post("http://localhost:5005/api/users", user)
@@ -61,7 +63,6 @@ export default function SignUpForm() {
             Name
           </label>
           <input
-            type="name"
             className="form-control"
             name="name"
             id="name"
@@ -86,6 +87,20 @@ export default function SignUpForm() {
           <div id="emailHelp" className="form-text">
             We'll never share your email with anyone else.
           </div>
+        </fieldset>
+        <fieldset className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            name="password"
+            id="passowrd"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </fieldset>
         <fieldset className="mb-3">
           <label htmlFor="location" className="form-label">

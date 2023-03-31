@@ -8,6 +8,7 @@ const {
   updateUser,
   deleteUser,
   createSkillForUser,
+  userLogin,
 } = require("../controllers/userController");
 
 router.route("/").get(getUsers).post(addUser);
@@ -32,6 +33,8 @@ router.get("/:id/skills", (req, res) => {
 });
 
 router.post("/:id/skills", createSkillForUser);
+
+router.post("/login", userLogin);
 
 router.put("/:id/skills/:skill_id", (req, res) => {
   console.log(req.body);
