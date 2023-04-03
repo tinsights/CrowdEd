@@ -17,14 +17,20 @@ export default function SkillPage() {
   function goToUser(id) {
     navigate(`/users/${id}`);
   }
-  function goToSkill(id) {
-    navigate(`/skills/${id}`);
-  }
 
   return (
     <>
-      <h2>{skill.title}</h2>
-      <p>{skill.description}</p>
+      {/* display skills and user information using bootstrap row and cols */}
+      <div className="row">
+        <div className="col-6">
+          <h3>{skill.title}</h3>
+          <p>{skill.description}</p>
+        </div>
+        <div className="col-6">
+          <h3>{skill.user?.name}</h3>
+          <p>{skill.user?.email}</p>
+        </div>
+      </div>
     </>
   );
 }
