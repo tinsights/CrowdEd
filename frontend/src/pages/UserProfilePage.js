@@ -12,14 +12,14 @@ export default function UserProfilePage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get(`http://localhost:5005/api/users/${userId}`).then((response) => {
+    axios.get(`/api/users/${userId}`).then((response) => {
       setUser(response.data);
     });
   }, [userId, isEditingUser]); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
 
   // makes a axios delete request to delete this user based on id
   function deleteUser() {
-    axios.delete(`http://localhost:5005/api/users/${user._id}`).then((response) => {
+    axios.delete(`/api/users/${user._id}`).then((response) => {
       navigate("/users");
     });
   }
