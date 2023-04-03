@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Users() {
   const [users, setUsers] = useState([]);
   useEffect(() => {
-    axios.get("http://localhost:5005/api/users").then((response) => {
+    axios.get("/api/users").then((response) => {
       setUsers(response.data);
     });
   }, []); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
