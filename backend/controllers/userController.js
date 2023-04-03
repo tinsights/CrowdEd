@@ -132,9 +132,7 @@ function deleteUser(req, res) {
     const deleteUser = db.get().collection("users").deleteOne({
       _id: userIdToDelete,
     });
-    const deleteSkills = db.get().collection("skills").deleteMany({
-      userId: userIdToDelete,
-    });
+    const deleteSkills = db.get().collection("skills").deleteMany({ "user.userId": userIdToDelete });
     Promise.all([deleteUser, deleteSkills]).then((result) => res.status(200).json(result));
   } catch (err) {
     res.status(500);
