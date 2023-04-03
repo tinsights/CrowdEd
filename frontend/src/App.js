@@ -8,6 +8,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import Skills from "./pages/Skills";
 import SkillPage from "./pages/SkillPage";
 import UserSignIn from "./pages/UserSignIn";
+import UserSignOut from "./pages/UserSignOut";
 
 function App() {
   return (
@@ -32,14 +33,14 @@ function App() {
                   Skills
                 </NavLink>
               </li>
-              {!localStorage.getItem("isLoggedIn") && (
+              {!localStorage.getItem("userLoggedIn") && (
                 <li className="nav-item ms-auto">
                   <NavLink className="nav-link" to="/users/signin">
                     Sign In
                   </NavLink>
                 </li>
               )}
-              {localStorage.getItem("isLoggedIn") && (
+              {localStorage.getItem("userLoggedIn") && (
                 <li className="nav-item ms-auto">
                   <NavLink className="nav-link" to="/users/signout">
                     Sign Out
@@ -57,6 +58,7 @@ function App() {
             <Route path="/users/" element={<Users />} />
             <Route path="/users/:userId" element={<UserProfilePage />} />
             <Route path="/users/signin" element={<UserSignIn />} />
+            <Route path="/users/signout" element={<UserSignOut />} />
           </Route>
           <Route path="/skills">
             <Route path="/skills/" element={<Skills />} />

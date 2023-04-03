@@ -23,7 +23,6 @@ export default function SignInForm() {
         console.log(response);
         // grab the user id from the response
         const userId = response.data._id;
-        localStorage.setItem("isLoggedIn", true);
         localStorage.setItem("userLoggedIn", userId);
         // redirect to user page
         navigate(`/users/${userId}`);
