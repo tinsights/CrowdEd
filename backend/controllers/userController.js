@@ -59,11 +59,11 @@ function addUser(req, res) {
 }
 
 function getUserById(req, res) {
-  const userID = req.params.id;
+  const userId = req.params.id;
   db.get()
     .collection("users")
     .findOne({
-      _id: new ObjectId(userID),
+      _id: new ObjectId(userId),
     })
     .then((result) => {
       switch (req.params.mode) {
@@ -133,7 +133,7 @@ function deleteUser(req, res) {
       _id: userIdToDelete,
     });
     const deleteSkills = db.get().collection("skills").deleteMany({
-      userID: userIdToDelete,
+      userId: userIdToDelete,
     });
     Promise.all([deleteUser, deleteSkills]).then((result) => res.status(200).json(result));
   } catch (err) {
@@ -148,7 +148,7 @@ async function createSkillForUser(req, res) {
   const { title, description, location } = payload;
   console.log(req.params.id);
 
-  const userID = new ObjectId(req.params.id);
+  const userId = new ObjectId(req.params.id);
 
   if (!title || !description || !location) {
     res.status(400);
@@ -156,22 +156,28 @@ async function createSkillForUser(req, res) {
   } else {
     // get the user details and store in variable
     const user = await db.get().collection("users").findOne({
-      _id: userID,
+      _id: userId,
     });
 
     // write to skills collection
-    const newSkill = await db.get().collection("skills").insertOne({
-      userID,
-      teacherName: user.name,
-      title,
-      description,
-      location,
-    });
+    const newSkill = await db
+      .get()
+      .collection("skills")
+      .insertOne({
+        user: {
+          userId,
+          name: user.name,
+          location,
+        },
+        title,
+        description,
+        location,
+      });
     // update user with new skillid reference
     db.get()
       .collection("users")
       .findOneAndUpdate(
-        { _id: userID },
+        { _id: userId },
         {
           $push: {
             skills: {
