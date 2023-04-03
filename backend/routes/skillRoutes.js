@@ -4,6 +4,9 @@ const router = express.Router({ mergeParams: true });
 const { getSkills, getSkillById, createReview } = require("../controllers/skillController");
 
 router.get("/", getSkills);
+router.get("/requests", (req, res) => {
+  res.status(200).json({ message: "Get all skill requests" });
+});
 router.get("/:skillid", getSkillById);
 
 router.post("/:skillid/review", createReview);

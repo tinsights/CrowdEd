@@ -50,10 +50,15 @@ function getSkillById(req, res) {
 }
 
 // create a review for a skill
-function createReview(req, res) {
+async function createReview(req, res) {
   const { skillid } = req.params;
   const { reviewerId, reviewText, rating } = req.body;
-  // assume skill exists, assume user exists
+  // get user name from id
+  const reviewer = await db
+    .get()
+    .collection("users")
+    .findOne({ _id: new ObjectId(reviewerId) });
+
   // add review to skill
   db.get()
     .collection("skills")
@@ -63,6 +68,7 @@ function createReview(req, res) {
         $push: {
           reviews: {
             reviewerId,
+            reviewerName: reviewer.name,
             reviewText,
             rating,
           },
