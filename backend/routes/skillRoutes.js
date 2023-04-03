@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
 
-const { getSkills, getSkillById } = require("../controllers/skillController");
+const { getSkills, getSkillById, createReview } = require("../controllers/skillController");
 
 router.get("/", getSkills);
 router.get("/:skillid", getSkillById);
 
-router.post("/", (req, res) => {
-  res.status(200).json({ message: "Create Skill" });
-});
+router.post("/:skillid/review", createReview);
 
 router.put("/:id", (req, res) => {
   res.status(200).json({ message: `Update Skill ${req.params.id}` });

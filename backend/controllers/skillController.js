@@ -1,4 +1,3 @@
-const { User, Skill } = require("../model/classes");
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 
@@ -50,7 +49,34 @@ function getSkillById(req, res) {
     });
 }
 
+// create a review for a skill
+function createReview(req, res) {
+  const { skillid } = req.params;
+  const { reviewerId, reviewText, rating } = req.body;
+  // assume skill exists, assume user exists
+  // add review to skill
+  db.get()
+    .collection("skills")
+    .updateOne(
+      { _id: new ObjectId(skillid) },
+      {
+        $push: {
+          reviews: {
+            reviewerId,
+            reviewText,
+            rating,
+          },
+        },
+      }
+    )
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    });
+}
+
 module.exports = {
   getSkills,
   getSkillById,
+  createReview,
 };
