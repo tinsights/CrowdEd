@@ -1,20 +1,7 @@
-const { User, Skill } = require("../model/classes");
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 const jwt = require("jsonwebtoken");
-
-const generateAccessToken = (id, email) => {
-  return jwt.sign(
-    {
-      user_id: id,
-      email: email,
-    },
-    process.env.TOKEN_SECRET,
-    {
-      expiresIn: "1h",
-    }
-  );
-};
+const bcrypt = require("bcryptjs");
 
 async function getUsers(req, res) {
   db.get()
@@ -47,13 +34,18 @@ function addUser(req, res) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
+    // generate a salt
+    const salt = bcrypt.genSaltSync(10);
+    // hash password
+    const hashedPassword = bcrypt.hashSync(password, salt);
+
     db.get()
       .collection("users")
       .insertOne({
         name,
         email,
         location,
-        password,
+        password: hashedPassword,
       })
       .then((result) => {
         switch (req.params.mode) {
@@ -228,11 +220,9 @@ async function userLogin(req, res) {
   } else {
     const user = await db.get().collection("users").findOne({
       email,
-      password,
     });
-    if (user) {
-      const accessToken = generateAccessToken(user._id, user.email);
-      res.status(200).json({ ...user, accessToken });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.status(200).json(user);
     } else {
       res.status(404);
       throw new Error("Invalid Credentials");
