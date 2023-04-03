@@ -1,5 +1,6 @@
 // import react router stuff
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Home from "./pages/Home";
@@ -11,6 +12,7 @@ import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <Router>
       <header className="container-fluid">
@@ -33,14 +35,14 @@ function App() {
                   Skills
                 </NavLink>
               </li>
-              {!localStorage.getItem("userLoggedIn") && (
+              {!isLoggedIn && (
                 <li className="nav-item ms-auto">
                   <NavLink className="nav-link" to="/users/signin">
                     Sign In
                   </NavLink>
                 </li>
               )}
-              {localStorage.getItem("userLoggedIn") && (
+              {isLoggedIn && (
                 <li className="nav-item ms-auto">
                   <NavLink className="nav-link" to="/users/signout">
                     Sign Out
@@ -57,8 +59,11 @@ function App() {
           <Route path="/users">
             <Route path="/users/" element={<Users />} />
             <Route path="/users/:userId" element={<UserProfilePage />} />
-            <Route path="/users/signin" element={<UserSignIn />} />
-            <Route path="/users/signout" element={<UserSignOut />} />
+            <Route
+              path="/users/signin"
+              element={<UserSignIn isLoggedIn={isLoggedIn} handleLogin={() => setIsLoggedIn(true)} />}
+            />
+            <Route path="/users/signout" element={<UserSignOut handleLogout={() => setIsLoggedIn(false)} />} />
           </Route>
           <Route path="/skills">
             <Route path="/skills/" element={<Skills />} />

@@ -1,6 +1,7 @@
-import SignInForm from "../components/SignInForm";
+import UserSignIn from "../pages/UserSignIn";
 
-export default function UserSignIn() {
+export default function UserSignOut({ handleLogout }) {
   localStorage.removeItem("userLoggedIn");
-  return <>{<SignInForm />}</>;
+  handleLogout();
+  return <UserSignIn />;
 }
