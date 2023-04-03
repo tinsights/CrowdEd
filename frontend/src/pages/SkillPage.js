@@ -15,16 +15,21 @@ export default function SkillPage() {
   const navigate = useNavigate();
 
   function goToUser(id) {
-    navigate(`/users/${id}`);
-  }
-  function goToSkill(id) {
-    navigate(`/skills/${id}`);
+    return () => navigate(`/users/${id}`);
   }
 
   return (
     <>
-      <h2>{skill.title}</h2>
-      <p>{skill.description}</p>
+      {/* display skills and user information using bootstrap row and cols */}
+      <div className="row mt-3">
+        <div className="col col-lg-8 shadow p-3 mb-5 bg-body rounded">
+          <h3>{skill.title}</h3>
+          <p>{skill.description}</p>
+        </div>
+        <div className="col shadow p-3 mb-5 bg-body rounded" onClick={goToUser(skill.user?.userId)}>
+          <h3>{skill.user?.name}</h3>
+        </div>
+      </div>
     </>
   );
 }
