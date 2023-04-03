@@ -1,4 +1,3 @@
-const { urlencoded } = require("express");
 const express = require("express");
 const path = require("path");
 const dotenv = require("dotenv").config();
@@ -6,6 +5,7 @@ const db = require("./config/MongoUtil");
 const { errorHandler } = require("./middleware/errorMiddleware");
 const cors = require("cors");
 const app = express();
+const jwt = require("jsonwebtoken");
 
 const PORT = process.env.PORT || 8888;
 

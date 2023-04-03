@@ -1,6 +1,20 @@
 const { User, Skill } = require("../model/classes");
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
+const jwt = require("jsonwebtoken");
+
+const generateAccessToken = (id, email) => {
+  return jwt.sign(
+    {
+      user_id: id,
+      email: email,
+    },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "1h",
+    }
+  );
+};
 
 async function getUsers(req, res) {
   db.get()
@@ -214,17 +228,14 @@ async function userLogin(req, res) {
   } else {
     const user = await db.get().collection("users").findOne({
       email,
+      password,
     });
     if (user) {
-      if (user.password === password) {
-        res.status(200).json(user);
-      } else {
-        res.status(401);
-        throw new Error("Invalid Password");
-      }
+      const accessToken = generateAccessToken(user._id, user.email);
+      res.status(200).json({ ...user, accessToken });
     } else {
       res.status(404);
-      throw new Error("User not found");
+      throw new Error("Invalid Credentials");
     }
   }
 }
