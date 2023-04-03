@@ -222,6 +222,8 @@ async function userLogin(req, res) {
       email,
     });
     if (user && (await bcrypt.compare(password, user.password))) {
+      const token = jwt.sign({ id: 7, role: "captain" }, "YOUR_SECRET_KEY");
+      res.cookie("access_token", token, { httpOnly: true });
       res.status(200).json(user);
     } else {
       res.status(404);
