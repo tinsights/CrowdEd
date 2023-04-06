@@ -2,6 +2,13 @@ const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { authenticateToken } = require("../middleware/authMiddleware");
+
+function generateAccessToken(id, email) {
+  return jwt.sign({ id, email }, process.env.TOKEN_SECRET, {
+    expiresIn: "1h",
+  });
+}
 
 async function getUsers(req, res) {
   db.get()
@@ -222,9 +229,9 @@ async function userLogin(req, res) {
       email,
     });
     if (user && (await bcrypt.compare(password, user.password))) {
-      const token = jwt.sign({ id: 7, role: "captain" }, "YOUR_SECRET_KEY");
+      const token = generateAccessToken(user._id, user.email);
       res.cookie("access_token", token, { httpOnly: true });
-      res.status(200).json(user);
+      res.status(200).json({ ...user, token });
     } else {
       res.status(404);
       throw new Error("Invalid Credentials");

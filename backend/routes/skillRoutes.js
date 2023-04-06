@@ -1,15 +1,12 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const { authenticateToken } = require("../middleware/authMiddleware");
 
 const { getSkills, getSkillById, createReview } = require("../controllers/skillController");
 
-router.get("/", getSkills);
-router.get("/requests", (req, res) => {
-  res.status(200).json({ message: "Get all skill requests" });
-});
-router.get("/:skillid", getSkillById);
+router.get("/", authenticateToken, getSkills);
 
-router.post("/:skillid/review", createReview);
+router.get("/:skillid", getSkillById);
 
 router.put("/:id", (req, res) => {
   res.status(200).json({ message: `Update Skill ${req.params.id}` });

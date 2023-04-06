@@ -10,6 +10,8 @@ import Skills from "./pages/Skills";
 import SkillPage from "./pages/SkillPage";
 import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

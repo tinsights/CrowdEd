@@ -3,15 +3,29 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Skills() {
+  const navigate = useNavigate();
+
   const [skills, setSkills] = useState([]);
+
   useEffect(() => {
+    axios.interceptors.response.use(
+      (response) => {
+        return response;
+      },
+      (error) => {
+        if (error.response.status === 401 || error.response.status === 403) {
+          // clear cookies and local storage
+          navigate("/users/signin");
+        }
+        return Promise.reject(error);
+      }
+    );
     axios.get("/api/skills").then((response) => {
-      console.log(response.data);
+      console.log(response);
+
       setSkills(response.data);
     });
   }, []); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
-
-  const navigate = useNavigate();
 
   function goToUser(id) {
     navigate(`/users/${id}`);

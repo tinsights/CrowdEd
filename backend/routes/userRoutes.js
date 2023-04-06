@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const { authenticateToken } = require("../middleware/authMiddleware");
 
 const {
   getUserById,
@@ -10,6 +11,16 @@ const {
   createSkillForUser,
   userLogin,
 } = require("../controllers/userController");
+
+router.get("/protected", authenticateToken, (req, res) => {
+  console.log(req.user);
+  res.status(200).json({ message: "You are authorized" });
+});
+router.get("/logout", (req, res) => {
+  console.log("logging out");
+  res.clearCookie("access_token");
+  res.status(200).json({ message: "Logged out" });
+});
 
 router.route("/").get(getUsers).post(addUser);
 

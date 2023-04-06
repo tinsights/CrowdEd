@@ -1,7 +1,18 @@
-import UserSignIn from "../pages/UserSignIn";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default function UserSignOut({ handleLogout }) {
-  localStorage.removeItem("userLoggedIn");
-  handleLogout();
-  return <UserSignIn />;
+  //navigate to home page
+  const navigate = useNavigate();
+  useEffect(() => {
+    axios.get("/api/users/logout").then((response) => {
+      localStorage.removeItem("userLoggedIn");
+      localStorage.clear();
+      handleLogout();
+      navigate("/");
+    });
+  }, []);
+  return;
 }
