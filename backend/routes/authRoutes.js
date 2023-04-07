@@ -1,4 +1,4 @@
-import userLogin from "../controllers/authControllers.js";
+import userLogin from "../controllers/authController.js";
 
 // login and logout routes
 router.post("/login", userLogin);

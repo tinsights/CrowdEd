@@ -47,6 +47,10 @@ function addUser(req, res) {
         email,
         location,
         password: hashedPassword,
+        skills: [],
+        requests: [],
+        inbox: [],
+        outbox: [],
       })
       .then((result) => {
         switch (req.params.mode) {
@@ -148,8 +152,8 @@ function deleteUser(req, res) {
 }
 
 module.exports = {
-  getUserById,
   getAllUsers,
+  getUserById,
   addUser,
   updateUser,
   deleteUser,

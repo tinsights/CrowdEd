@@ -66,22 +66,27 @@ async function createSkillForUser(req, res) {
 }
 
 function getSkillById(req, res) {
-  const { skillid } = req.params;
+  const { userId, skillId } = req.params;
   db.get()
-    .collection("skills")
-    .findOne({ _id: new ObjectId(skillid) })
-    .then((skill) => {
-      switch (req.params.mode) {
-        case "view":
-          res.status(200).render("pages/skill.ejs", { skill });
-          break;
-        case "api":
-        default:
-          res.status(200).json(skill);
-          break;
+    .collection("users")
+    .findOne(
+      {
+        _id: new ObjectId(userId),
+      },
+      {
+        projection: {
+          skills: {
+            $elemMatch: {
+              _id: new ObjectId(skillId),
+            },
+          },
+        },
       }
+    )
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
     })
-
     .catch((err) => {
       console.log(err);
       res.status(500);
@@ -97,57 +102,38 @@ function updateSkill(req, res) {
     res.status(400);
     throw new Error("Invalid Form");
   }
-  const idToUpdate = req.params.id;
+  const { userId, skillId } = req.params;
+  // update skill embdedded document
   db.get()
-    .collection("skills")
+    .collection("users")
     .findOneAndUpdate(
       {
-        _id: new ObjectId(idToUpdate),
+        _id: new ObjectId(userId),
+        "skills._id": new ObjectId(skillId),
       },
       {
         $set: {
-          title,
-          description,
+          "skills.$.title": title,
+          "skills.$.description": description,
         },
       },
       {
-        returnNewDocument: true,
+        returnDocument: "after",
       }
     )
     .then((result) => {
       console.log(result);
-      // update skill in users collections
-      db.get()
-        .collection("users")
-        .updateOne(
-          {
-            skills: {
-              $elemMatch: {
-                _id: new ObjectId(idToUpdate),
-              },
-            },
-          },
-          {
-            $set: {
-              "skills.$.title": title,
-              "skills.$.description": description,
-            },
-          }
-        )
-        .then((result) => {
-          console.log(result);
-          switch (req.params.mode) {
-            case "view":
-              res.status(200).render("pages/skill.ejs", {
-                skill: result,
-              });
-              break;
-            case "api":
-            default:
-              res.status(200).json(result);
-              break;
-          }
-        });
+      switch (req.params.mode) {
+        case "view":
+          res.status(200).render("pages/skill.ejs", {
+            skill: result,
+          });
+          break;
+        case "api":
+        default:
+          res.status(200).json(result);
+          break;
+      }
     })
     .catch((err) => {
       res.status(500);
@@ -159,6 +145,7 @@ function deleteSkill(req, res) {
   console.log("delete skills");
   const { userId, skillId } = req.params;
   db.get()
+    .collection("users")
     .findOneAndUpdate(
       { _id: new ObjectId(userId) },
       {

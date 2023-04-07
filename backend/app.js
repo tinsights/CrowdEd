@@ -20,6 +20,7 @@ async function main() {
   await db.connect();
   app.use("/:mode/users", require("./routes/userRoutes"));
   app.use("/:mode/users/:userId/skills", require("./routes/skillRoutes"));
+  app.use("/:mode/users/:userId/requests", require("./routes/requestRoutes"));
 
   app.get("/", async (req, res) => {
     res.redirect("/register");
