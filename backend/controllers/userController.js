@@ -1,6 +1,5 @@
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { authenticateToken } = require("../middleware/authMiddleware");
 
@@ -49,8 +48,6 @@ function addUser(req, res) {
         password: hashedPassword,
         skills: [],
         requests: [],
-        inbox: [],
-        outbox: [],
       })
       .then((result) => {
         switch (req.params.mode) {

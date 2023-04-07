@@ -21,13 +21,9 @@ async function main() {
   app.use("/:mode/users", require("./routes/userRoutes"));
   app.use("/:mode/users/:userId/skills", require("./routes/skillRoutes"));
   app.use("/:mode/users/:userId/requests", require("./routes/requestRoutes"));
-
-  app.get("/", async (req, res) => {
-    res.redirect("/register");
-  });
-  app.get("/register", (req, res) => {
-    res.render("pages/index.ejs");
-  });
+  app.use("/:mode/users/:userId/skills/:skillId/reviews", require("./routes/reviewRoutes"));
+  // auth routes
+  app.use("/auth", require("./routes/authRoutes"));
 }
 
 main();

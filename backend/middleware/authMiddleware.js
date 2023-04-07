@@ -12,6 +12,11 @@ function authenticateToken(req, res, next) {
       return res.status(403).json({ error: "Forbidden" });
     }
     req.user = user;
+    req.userDetails = {
+      _id: user.id,
+      email: user.email,
+      username: user.username,
+    };
     next();
   });
 }

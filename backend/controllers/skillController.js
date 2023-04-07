@@ -27,7 +27,7 @@ async function createSkillForUser(req, res) {
 
   const userId = new ObjectId(req.params.userId);
 
-  if (!title || !description) {
+  if (!title || !description || category) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
@@ -42,6 +42,7 @@ async function createSkillForUser(req, res) {
               _id: new ObjectId(),
               title,
               description,
+              category,
             },
           },
         },
