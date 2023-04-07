@@ -2,18 +2,28 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 const { authenticateToken } = require("../middleware/authMiddleware");
 
-const { getSkills, getSkillById, createReview } = require("../controllers/skillController");
+const {
+  getSkillsForUser,
+  updateSkill,
+  getSkillById,
+  createSkillForUser,
+  deleteSkill,
+} = require("../controllers/skillController");
 
-router.get("/", authenticateToken, getSkills);
+router.get("/", getSkillsForUser);
+router.post("/", createSkillForUser);
 
-router.get("/:skillid", getSkillById);
+router.get("/:skillId", getSkillById);
 
-router.put("/:id", (req, res) => {
-  res.status(200).json({ message: `Update Skill ${req.params.id}` });
+router.put("/:skillId", updateSkill);
+
+router.delete("/:skillId", deleteSkill);
+
+router.put("/:skillId", (req, res) => {
+  console.log(req.body);
+  res.status(200).json({ message: `Update skill ${req.params.skill_id} for user ${req.params.id}` });
 });
 
-router.delete("/:id", (req, res) => {
-  res.status(200).json({ message: `Delete Skill ${req.params.id}` });
-});
+router.delete("/:skillId", deleteSkill);
 
 module.exports = router;

@@ -10,8 +10,7 @@ import Skills from "./pages/Skills";
 import SkillPage from "./pages/SkillPage";
 import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import Map from "./pages/Map";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -35,6 +34,11 @@ function App() {
               <li className="nav-item">
                 <NavLink className="nav-link" to="/skills">
                   Skills
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink className="nav-link" to="/map">
+                  Map
                 </NavLink>
               </li>
               {!isLoggedIn && (
@@ -71,6 +75,7 @@ function App() {
             <Route path="/skills/" element={<Skills />} />
             <Route path="/skills/:skillId" element={<SkillPage />} />
           </Route>
+          <Route path="map" element={<Map />}></Route>
         </Routes>
       </div>
     </Router>

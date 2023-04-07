@@ -18,7 +18,7 @@ export default function AddSkillForm({ user, handleComplete }) {
     e.preventDefault();
     // post to backend user data
     axios
-      .post(`http://localhost:5005/api/users/${userId}/skills`, { ...skill, ...user })
+      .post(`/api/users/${userId}/skills`, { ...skill, ...user })
       .then(function (response) {
         console.log(response);
         // grab the user id from the response
