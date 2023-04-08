@@ -7,7 +7,7 @@ export default function UserSignOut({ handleLogout }) {
   //navigate to home page
   const navigate = useNavigate();
   useEffect(() => {
-    axios.get("/api/users/logout").then((response) => {
+    axios.get("/auth/logout").then((response) => {
       localStorage.removeItem("userLoggedIn");
       localStorage.clear();
       handleLogout();

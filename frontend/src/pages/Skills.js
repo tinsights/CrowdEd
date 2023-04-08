@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function Skills() {
   const navigate = useNavigate();
-
-  const [skills, setSkills] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
     axios.interceptors.response.use(
@@ -15,64 +14,65 @@ export default function Skills() {
       (error) => {
         if (error.response.status === 401 || error.response.status === 403) {
           // clear cookies and local storage
-          navigate("/users/signin");
+          navigate("/signin");
         }
         return Promise.reject(error);
       }
     );
-    axios.get("/api/skills").then((response) => {
-      console.log(response);
-
-      setSkills(response.data);
+    axios.get("/api/users").then((response) => {
+      setUsers(response.data);
+      console.log(response.data);
     });
   }, []); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
 
-  function goToUser(id) {
-    navigate(`/users/${id}`);
+  function goToUser(userId) {
+    navigate(`/users/${userId}`);
   }
-  function goToSkill(id) {
-    navigate(`/skills/${id}`);
+  function goToSkill(userId, skillId) {
+    navigate(`/users/${userId}skills/${skillId}`);
   }
 
   return (
     <>
       <h2>All Skills</h2>
       <div className="row row-cols-1 row-cols-md-3 g-4">
-        {skills.map((s) => (
-          <React.Fragment key={s._id}>
-            <div className="col">
-              <div className="card h-100">
-                <div
-                  className="card-body"
-                  onClick={() => {
-                    goToSkill(s._id);
-                  }}
-                >
-                  <h3
-                    className="card-title"
+        {users?.map((u) =>
+          u.skills?.map((s) => (
+            <React.Fragment key={s._id}>
+              <div className="col">
+                <div className="card h-100">
+                  <div
+                    className="card-body"
                     onClick={() => {
                       goToSkill(s._id);
                     }}
                   >
-                    {s.title}
-                  </h3>
-                  <div className="card-text">
-                    <p>{s.description}</p>
+                    <h3
+                      className="card-title"
+                      onClick={() => {
+                        goToSkill(s._id);
+                      }}
+                    >
+                      {s.title}
+                    </h3>
+                    <div className="card-text">
+                      <p>{s.description}</p>
+                    </div>
+                  </div>
+                  <div className="card-footer">
+                    <p
+                      onClick={() => {
+                        goToUser(s.userID);
+                      }}
+                    >
+                      {s.teacherName}
+                    </p>
                   </div>
                 </div>
-                <div className="card-footer">
-                  <p
-                    onClick={() => {
-                      goToUser(s.userID);
-                    }}
-                  >
-                    {s.teacherName}
-                  </p>
-                </div>
               </div>
-            </div>
-          </React.Fragment>
-        ))}
+            </React.Fragment>
+          ))
+        )}
       </div>
     </>
   );

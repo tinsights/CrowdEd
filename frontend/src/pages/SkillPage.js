@@ -4,14 +4,16 @@ import { useNavigate, useParams } from "react-router-dom";
 
 export default function SkillPage() {
   const [skill, setSkill] = useState({});
+  const [user, setUser] = useState({});
   const [isReviewing, setIsReviewing] = useState(false);
-  const { skillId } = useParams();
+  const { userId, skillId } = useParams();
   useEffect(() => {
-    axios.get(`/api/skills/${skillId}`).then((response) => {
+    axios.get(`/api/users/${userId}/skills/${skillId}`).then((response) => {
       console.log(response.data);
-      setSkill(response.data);
+      setUser(response.data);
+      if (response.data.skills) setSkill(response.data.skills[0]);
     });
-  }, [skillId]);
+  }, [userId, skillId]);
 
   const navigate = useNavigate();
 

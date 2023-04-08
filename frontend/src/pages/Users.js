@@ -7,16 +7,15 @@ export default function Users() {
   useEffect(() => {
     axios.get("/api/users").then((response) => {
       setUsers(response.data);
+      console.log(users);
     });
-  }, []); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
-
+  }, []);
   const navigate = useNavigate();
-
-  function goToUser(id) {
-    navigate(`/users/${id}`);
+  function goToUser(userId) {
+    navigate(`/users/${userId}`);
   }
-  function goToSkill(id) {
-    navigate(`/skills/${id}`);
+  function goToSkill(userId, skillId) {
+    navigate(`/users/${userId}skills/${skillId}`);
   }
 
   return (
@@ -24,7 +23,7 @@ export default function Users() {
       <h2>All Users</h2>
       <div className="container">
         <div className="row row-cols-1 row-cols-md-3 g-4">
-          {users.map((u) => (
+          {users?.map((u) => (
             <React.Fragment key={u._id}>
               <div className="col">
                 <div className="card h-100">
@@ -35,7 +34,7 @@ export default function Users() {
                         goToUser(u._id);
                       }}
                     >
-                      {u.name}
+                      {u.username}
                     </h3>
                     <div className="card-text">
                       <p>Skills:</p>
@@ -44,7 +43,7 @@ export default function Users() {
                           <React.Fragment key={s._id}>
                             <li
                               onClick={() => {
-                                goToSkill(s._id);
+                                goToSkill(u._id, s._id);
                               }}
                             >
                               {s.title}

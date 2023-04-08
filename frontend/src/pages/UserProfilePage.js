@@ -15,7 +15,7 @@ export default function UserProfilePage() {
     axios.get(`/api/users/${userId}`).then((response) => {
       setUser(response.data);
     });
-  }, [userId, isEditingUser]); // The code inside the Effect does not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
+  }, [userId, isEditingUser]); // The code inside the Effect des not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
 
   // makes a axios delete request to delete this user based on id
   function deleteUser() {
@@ -25,10 +25,26 @@ export default function UserProfilePage() {
   }
 
   function goToSkill(id) {
-    navigate(`/skills/${id}`);
+    navigate(`/users/${userId}/skills/${id}`);
   }
   function completeUserEdit() {
     setIsEditingUser(false);
+  }
+
+  function editSkill(id) {
+    return () => navigate(`/users/${userId}/skills/${id}/edit`);
+  }
+  function deleteSkill(id) {
+    return () => {
+      axios
+        .delete(`/api/users/${userId}/skills/${id}`)
+        .then((response) => {
+          navigate(`/users/${userId}`);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
   }
 
   return (
@@ -39,9 +55,9 @@ export default function UserProfilePage() {
           {!isEditingUser && (
             <>
               <ul className="list-group">
-                <li className="list-group-item">name: {user.name}</li>
+                <li className="list-group-item">username: {user.username}</li>
                 <li className="list-group-item">email: {user.email}</li>
-                <li className="list-group-item">location: {user.location?.SEARCHVAL}</li>
+                <li className="list-group-item">location: {user.location?.POSTAL}</li>
               </ul>
               <div className="mt-3 d-flex justify-content-end">
                 <button onClick={() => setIsEditingUser(true)} className="btn btn-warning">
@@ -70,6 +86,15 @@ export default function UserProfilePage() {
                     <div className="card-body">
                       <h5 className="card-title">{s.title}</h5>
                       <p className="card-text">{s.description}</p>
+                    </div>
+                    {/* add buttons to edit or delete the skill */}
+                    <div className="d-flex justify-content-around mb-2">
+                      <button className="btn btn-warning btm-sm" onClick={editSkill(s._id)}>
+                        Edit
+                      </button>
+                      <button className="btn btn-danger btm-sm" onClick={deleteSkill(s._id)}>
+                        Delete
+                      </button>
                     </div>
                     <div className="card-footer">
                       <small className="text-muted">Last updated 3 mins ago</small>
