@@ -1,6 +1,37 @@
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 
+// get all skills
+async function getAllSkills(req, res) {
+  db.get()
+    .collection("users")
+    .find(
+      {
+        skills: {
+          $exists: true,
+          $not: {
+            $size: 0,
+          },
+        },
+      },
+      {
+        projection: {
+          username: 1,
+          location: 1,
+          skills: 1,
+        },
+      }
+    )
+    .toArray()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500);
+      throw new Error(err);
+    });
+}
+
 async function getSkillsForUser(req, res) {
   // get all skills for a user
   const userId = new ObjectId(req.params.userId);
@@ -32,6 +63,7 @@ async function createSkillForUser(req, res) {
     throw new Error("Invalid Form");
   } else {
     // update user with new skillid reference
+    const insertedId = new ObjectId();
     db.get()
       .collection("users")
       .findOneAndUpdate(
@@ -39,7 +71,7 @@ async function createSkillForUser(req, res) {
         {
           $push: {
             skills: {
-              _id: new ObjectId(),
+              _id: insertedId,
               ...payload,
             },
           },
@@ -57,7 +89,8 @@ async function createSkillForUser(req, res) {
             break;
           case "api":
           default:
-            res.status(200).json(result.value);
+            console.log(result);
+            res.status(200).json({ user: result.value, insertedId });
             break;
         }
       });
@@ -74,6 +107,9 @@ function getSkillById(req, res) {
       },
       {
         projection: {
+          _id: 1,
+          username: 1,
+          location: 1,
           skills: {
             $elemMatch: {
               _id: new ObjectId(skillId),
@@ -212,6 +248,7 @@ function searchSkills(req, res) {
 }
 
 module.exports = {
+  getAllSkills,
   getSkillsForUser,
   createSkillForUser,
   getSkillById,

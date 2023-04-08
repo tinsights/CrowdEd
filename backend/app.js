@@ -6,6 +6,8 @@ const { errorHandler } = require("./middleware/errorMiddleware");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const app = express();
+const getAllSkills = require("./controllers/skillController").getAllSkills;
+const getAllRequests = require("./controllers/requestController").getAllRequests;
 
 const PORT = process.env.PORT || 8888;
 
@@ -22,6 +24,12 @@ async function main() {
   app.use("/:mode/users/:userId/skills", require("./routes/skillRoutes"));
   app.use("/:mode/users/:userId/requests", require("./routes/requestRoutes"));
   app.use("/:mode/users/:userId/skills/:skillId/reviews", require("./routes/reviewRoutes"));
+  app.get("/api/skills", getAllSkills);
+  app.get("/api/requests", getAllRequests);
+  app.get("/api/categories", async (req, res) => {
+    const categories = await db.get().collection("categories").find({}).toArray();
+    res.status(200).json(categories);
+  });
   // auth routes
   app.use("/auth", require("./routes/authRoutes"));
 }

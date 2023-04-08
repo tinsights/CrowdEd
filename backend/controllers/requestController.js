@@ -1,6 +1,37 @@
 const ObjectId = require("mongodb").ObjectId;
 const db = require("../config/MongoUtil");
 
+// get all requests
+async function getAllRequests(req, res) {
+  db.get()
+    .collection("users")
+    .find(
+      {
+        requests: {
+          $exists: true,
+          $not: {
+            $size: 0,
+          },
+        },
+      },
+      {
+        projection: {
+          username: 1,
+          location: 1,
+          requests: 1,
+        },
+      }
+    )
+    .toArray()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500);
+      throw new Error(err);
+    });
+}
+
 // get all requests for a user
 async function getRequestsForUser(req, res) {
   const userId = new ObjectId(req.params.userId);
@@ -147,6 +178,7 @@ async function searchRequests(req, res) {
 }
 
 module.exports = {
+  getAllRequests,
   getRequestsForUser,
   createRequestForUser,
   getRequestById,

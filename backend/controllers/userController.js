@@ -4,9 +4,10 @@ const bcrypt = require("bcryptjs");
 const { authenticateToken } = require("../middleware/authMiddleware");
 
 async function getAllUsers(req, res) {
+  console.log("getting all users");
   db.get()
     .collection("users")
-    .find({})
+    .find({}, { password: 0 })
     .toArray()
     .then((users) => {
       switch (req.params.mode) {
@@ -17,6 +18,7 @@ async function getAllUsers(req, res) {
           break;
         case "api":
         default:
+          console.log(users);
           res.status(200).json(users);
           break;
       }
@@ -46,8 +48,6 @@ function addUser(req, res) {
         email,
         location,
         password: hashedPassword,
-        skills: [],
-        requests: [],
       })
       .then((result) => {
         switch (req.params.mode) {
@@ -70,9 +70,14 @@ function getUserById(req, res) {
   const userId = req.params.id;
   db.get()
     .collection("users")
-    .findOne({
-      _id: new ObjectId(userId),
-    })
+    .findOne(
+      {
+        _id: new ObjectId(userId),
+      },
+      {
+        projection: { password: 0 },
+      }
+    )
     .then((result) => {
       switch (req.params.mode) {
         case "view":
