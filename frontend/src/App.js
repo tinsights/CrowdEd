@@ -1,6 +1,6 @@
 // import react router stuff
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, createContext, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Home from "./pages/Home";
@@ -43,14 +43,14 @@ function App() {
               </li>
               {!isLoggedIn && (
                 <li className="nav-item ms-auto">
-                  <NavLink className="nav-link" to="/users/signin">
+                  <NavLink className="nav-link" to="/signin">
                     Sign In
                   </NavLink>
                 </li>
               )}
               {isLoggedIn && (
                 <li className="nav-item ms-auto">
-                  <NavLink className="nav-link" to="/users/signout">
+                  <NavLink className="nav-link" to="/signout">
                     Sign Out
                   </NavLink>
                 </li>
@@ -65,17 +65,16 @@ function App() {
           <Route path="/users">
             <Route path="/users/" element={<Users />} />
             <Route path="/users/:userId" element={<UserProfilePage />} />
-            <Route
-              path="/users/signin"
-              element={<UserSignIn isLoggedIn={isLoggedIn} handleLogin={() => setIsLoggedIn(true)} />}
-            />
-            <Route path="/users/signout" element={<UserSignOut handleLogout={() => setIsLoggedIn(false)} />} />
+            <Route path="/users/:userId/skills/:skillId" element={<SkillPage />} />
           </Route>
-          <Route path="/skills">
-            <Route path="/skills/" element={<Skills />} />
-            <Route path="/skills/:skillId" element={<SkillPage />} />
+
+          <Route path="/skills/" element={<Skills />} />
+          <Route path="map">
+            <Route path="/map/" element={<Map />} />
+            <Route path="/map/:lat/:lng" element={<Map />} />
           </Route>
-          <Route path="map" element={<Map />}></Route>
+          <Route path="/signin" element={<UserSignIn handleLogin={() => setIsLoggedIn(true)} />} />
+          <Route path="/signout" element={<UserSignOut handleLogout={() => setIsLoggedIn(false)} />} />
         </Routes>
       </div>
     </Router>
