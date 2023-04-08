@@ -21,7 +21,11 @@ async function getRequestsForUser(req, res) {
 // create a request for a user
 async function createRequestForUser(req, res) {
   const payload = req.body;
-  const { title, description } = payload;
+  const { title, description, category } = payload;
+  if (!title || !description || !category) {
+    res.status(400);
+    throw new Error("Invalid Form");
+  }
   const userId = new ObjectId(req.params.userId);
   db.get()
     .collection("users")
@@ -31,8 +35,7 @@ async function createRequestForUser(req, res) {
         $push: {
           requests: {
             _id: new ObjectId(),
-            title,
-            description,
+            ...payload,
           },
         },
       },
