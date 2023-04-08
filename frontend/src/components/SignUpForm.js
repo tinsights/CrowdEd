@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUpForm() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [addressQuery, setAddressQuery] = useState({
@@ -17,13 +17,13 @@ export default function SignUpForm() {
     e.preventDefault();
     // post to backend user data
     const user = {
-      name,
+      username,
       email,
       location,
       password,
     };
     axios
-      .post("http://localhost:5005/api/users", user)
+      .post("/api/users", user)
       .then(function (response) {
         console.log(response);
         // grab the user id from the response
@@ -59,16 +59,16 @@ export default function SignUpForm() {
         }}
       >
         <fieldset className="mb-3">
-          <label htmlFor="name" className="form-label">
-            Name
+          <label htmlFor="username" className="form-label">
+            Username
           </label>
           <input
             className="form-control"
-            name="name"
-            id="name"
+            name="username"
+            id="username"
             placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </fieldset>
         <fieldset className="mb-3">
