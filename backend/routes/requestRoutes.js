@@ -6,11 +6,14 @@ const {
   getRequestsForUser,
   createRequestForUser,
   getRequestById,
+  searchRequests,
   updateRequest,
   deleteRequest,
 } = require("../controllers/requestController");
 
 router.route("/").get(getRequestsForUser).post(createRequestForUser);
+
+router.get("/search", searchRequests);
 
 router.route("/:requestId").get(getRequestById).put(updateRequest).delete(deleteRequest);
 

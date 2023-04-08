@@ -8,9 +8,11 @@ const {
   getSkillById,
   createSkillForUser,
   deleteSkill,
+  searchSkills,
 } = require("../controllers/skillController");
 
 router.route("/").get(getSkillsForUser).post(createSkillForUser);
+router.get("/search", searchSkills);
 
 router.route("/:skillId").get(getSkillById).put(updateSkill).delete(deleteSkill);
 

@@ -107,10 +107,47 @@ async function deleteRequest(req, res) {
     });
 }
 
+// search for requests in params
+async function searchRequests(req, res) {
+  const { query } = req.query;
+  console.log(query);
+  db.get()
+    .collection("users")
+    .find({
+      requests: {
+        $elemMatch: {
+          $or: [{ title: { $regex: query, $options: "i" } }, { description: { $regex: query, $options: "i" } }],
+        },
+      },
+    })
+    .project({
+      name: 1,
+      email: 1,
+      requests: {
+        $filter: {
+          input: "$requests",
+          as: "request",
+          cond: {
+            $or: [{ $eq: ["$$request.title", query] }, { $eq: ["$$request.description", query] }],
+          },
+        },
+      },
+    })
+    .toArray()
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500);
+      throw new Error(err);
+    });
+}
+
 module.exports = {
   getRequestsForUser,
   createRequestForUser,
   getRequestById,
+  searchRequests,
   updateRequest,
   deleteRequest,
 };

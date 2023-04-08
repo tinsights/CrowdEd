@@ -22,12 +22,12 @@ async function getSkillsForUser(req, res) {
 async function createSkillForUser(req, res) {
   const payload = req.body;
   console.log(payload);
-  const { title, description } = payload;
+  const { title, description, category } = payload;
   console.log(req.params.userId);
 
   const userId = new ObjectId(req.params.userId);
 
-  if (!title || !description || category) {
+  if (!title || !description || !category) {
     res.status(400);
     throw new Error("Invalid Form");
   } else {
@@ -40,9 +40,7 @@ async function createSkillForUser(req, res) {
           $push: {
             skills: {
               _id: new ObjectId(),
-              title,
-              description,
-              category,
+              ...payload,
             },
           },
         },
@@ -98,8 +96,8 @@ function getSkillById(req, res) {
 // update skill via http put
 function updateSkill(req, res) {
   const payload = req.body;
-  const { title, description } = payload;
-  if (!title || !description) {
+  const { title, description, category } = payload;
+  if (!title || !description || !category) {
     res.status(400);
     throw new Error("Invalid Form");
   }
@@ -116,6 +114,7 @@ function updateSkill(req, res) {
         $set: {
           "skills.$.title": title,
           "skills.$.description": description,
+          "skills.$.category": category,
         },
       },
       {
@@ -169,37 +168,48 @@ function deleteSkill(req, res) {
     });
 }
 
-// create a review for a skill
-// async function createReview(req, res) {
-//   const { skillid } = req.params;
-//   const { reviewerId, reviewText, rating } = req.body;
-//   // get user name from id
-//   const reviewer = await db
-//     .get()
-//     .collection("users")
-//     .findOne({ _id: new ObjectId(reviewerId) });
-
-//   // add review to skill
-//   db.get()
-//     .collection("users")
-//     .updateOne(
-//       { _id: new ObjectId(skillid) },
-//       {
-//         $push: {
-//           reviews: {
-//             reviewerId,
-//             reviewerName: reviewer.name,
-//             reviewText,
-//             rating,
-//           },
-//         },
-//       }
-//     )
-//     .then((result) => {
-//       console.log(result);
-//       res.status(200).json(result);
-//     });
-// }
+// search for skills
+function searchSkills(req, res) {
+  const { query } = req.query;
+  console.log(query);
+  // find all skills that match the search query
+  // return documents that match the search query, with only skills that match the search query
+  db.get()
+    .collection("users")
+    .find({
+      skills: {
+        $elemMatch: {
+          $or: [{ title: { $regex: query, $options: "i" } }, { description: { $regex: query, $options: "i" } }],
+        },
+      },
+    })
+    .project({
+      name: 1,
+      email: 1,
+      location: 1,
+      skills: {
+        $filter: {
+          input: "$skills",
+          as: "skill",
+          cond: {
+            $or: [
+              { $regexMatch: { input: "$$skill.title", regex: query, options: "i" } },
+              { $regexMatch: { input: "$$skill.description", regex: query, options: "i" } },
+            ],
+          },
+        },
+      },
+    })
+    .toArray()
+    .then((result) => {
+      console.log(result);
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(500);
+      throw new Error(err);
+    });
+}
 
 module.exports = {
   getSkillsForUser,
@@ -207,4 +217,5 @@ module.exports = {
   getSkillById,
   updateSkill,
   deleteSkill,
+  searchSkills,
 };
