@@ -6,14 +6,39 @@ import "./App.css";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
 import UserProfilePage from "./pages/UserProfilePage";
+import ViewUserPage from "./pages/ViewUserPage";
 import Skills from "./pages/Skills";
 import SkillPage from "./pages/SkillPage";
 import UserSignIn from "./pages/UserSignIn";
 import UserSignOut from "./pages/UserSignOut";
 import Map from "./pages/Map";
+import axios from "axios";
 
 function App() {
+  function checkIfLoggedIn() {
+    axios
+      .get("/auth/checkToken")
+      .then((response) => {
+        switch (response.status) {
+          case 200:
+            setIsLoggedIn(true);
+            break;
+          case 203:
+            setIsLoggedIn(false);
+            break;
+          default:
+            setIsLoggedIn(false);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    checkIfLoggedIn();
+  }, []);
+
   return (
     <Router>
       <header className="container-fluid">
@@ -50,6 +75,13 @@ function App() {
               )}
               {isLoggedIn && (
                 <li className="nav-item ms-auto">
+                  <NavLink className="nav-link" to="/me">
+                    My Profile
+                  </NavLink>
+                </li>
+              )}
+              {isLoggedIn && (
+                <li className="nav-item">
                   <NavLink className="nav-link" to="/signout">
                     Sign Out
                   </NavLink>
@@ -62,9 +94,10 @@ function App() {
       <div className="container">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/me" element={<UserProfilePage />} />
           <Route path="/users">
             <Route path="/users/" element={<Users />} />
-            <Route path="/users/:userId" element={<UserProfilePage />} />
+            <Route path="/users/:userId" element={<ViewUserPage />} />
             <Route path="/users/:userId/skills/:skillId" element={<SkillPage />} />
           </Route>
 

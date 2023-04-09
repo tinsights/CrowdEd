@@ -3,18 +3,21 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function EditUserForm({ user, completeEdit }) {
-  const [userFormData, setUserFormData] = useState(user);
-  const navigate = useNavigate();
-
-  function handleFormChange(e) {
-    setUserFormData({ ...userFormData, [e.target.name]: e.target.value });
-  }
+  console.log(user.location.POSTAL);
+  const [username, setUsername] = useState(user.username);
+  const [email, setEmail] = useState(user.email);
+  const [password, setPassword] = useState(user.password);
+  const [addressQuery, setAddressQuery] = useState({
+    postCode: user.location.POSTAL,
+    results: [],
+  });
+  const [location, setLocation] = useState(user.location);
 
   function handleSubmit(e) {
     e.preventDefault();
     // post to backend user data
     axios
-      .put(`http://localhost:5005/api/users/${user._id}`, userFormData)
+      .put(`http://localhost:5005/api/users/${user._id}`, { username, email, location, password })
       .then(function (response) {
         console.log(response);
         completeEdit();
@@ -33,17 +36,17 @@ export default function EditUserForm({ user, completeEdit }) {
         }}
       >
         <fieldset className="mb-3">
-          <label htmlFor="name" className="form-label">
+          <label htmlFor="username" className="form-label">
             Name
           </label>
           <input
             type="name"
             className="form-control"
-            name="name"
-            id="name"
-            placeholder="Name"
-            value={userFormData.name}
-            onChange={(e) => handleFormChange(e)}
+            name="username"
+            id="username"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
         </fieldset>
         <fieldset className="mb-3">
@@ -56,12 +59,9 @@ export default function EditUserForm({ user, completeEdit }) {
             name="email"
             id="email"
             placeholder="Email"
-            value={userFormData.email}
-            onChange={(e) => handleFormChange(e)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <div id="emailHelp" className="form-text">
-            We'll never share your email with anyone else.
-          </div>
         </fieldset>
         <fieldset className="mb-3">
           <label htmlFor="location" className="form-label">
@@ -72,8 +72,8 @@ export default function EditUserForm({ user, completeEdit }) {
             name="location"
             id="location"
             placeholder="Post Code"
-            value={userFormData.location}
-            onChange={(e) => handleFormChange(e)}
+            value={addressQuery.postCode}
+            onChange={(e) => setAddressQuery({ ...addressQuery, postCode: e.target.value })}
           />
         </fieldset>
         <div className="d-flex  justify-content-end">
