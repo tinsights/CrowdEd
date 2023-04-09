@@ -67,6 +67,7 @@ function addUser(req, res) {
 }
 
 function getUserById(req, res) {
+  console.log("getting user by id: " + req.params.id);
   const userId = req.params.id;
   db.get()
     .collection("users")

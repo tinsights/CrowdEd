@@ -21,4 +21,20 @@ function authenticateToken(req, res, next) {
   });
 }
 
-module.exports = { authenticateToken };
+// check token
+function checkToken(req, res, next) {
+  const token = req.cookies.access_token;
+  if (!token) {
+    return res.status(203).json({ loggedIn: false });
+  }
+
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+    if (err) {
+      return res.status(203).json({ loggedIn: false });
+    }
+    req.userId = user._id;
+    next();
+  });
+}
+
+module.exports = { authenticateToken, checkToken };
