@@ -27,10 +27,12 @@ async function getReviewsForSkill(req, res) {
 
 // create a rating and review for a skill
 async function createRatingAndReviewForSkill(req, res) {
+  console.log("review");
+  console.log(req.body);
   const payload = req.body;
   const loggedInUser = req.userDetails;
-  const { rating, review } = payload;
-  if (!rating || !review) {
+  const { rating, reviewText } = payload;
+  if (!rating || !reviewText) {
     res.status(400);
     throw new Error("Invalid Form");
   }
@@ -52,7 +54,7 @@ async function createRatingAndReviewForSkill(req, res) {
             _id: new ObjectId(),
             reviewer: loggedInUser,
             rating,
-            review,
+            review: reviewText,
           },
         },
       },
@@ -73,9 +75,9 @@ async function createRatingAndReviewForSkill(req, res) {
 async function updateRatingAndReviewForSkill(req, res) {
   const payload = req.body;
   const loggedInUser = req.userDetails;
-  const { rating, review } = payload;
-  console.log(rating, review);
-  if (!rating || !review) {
+  const { rating, reviewText } = payload;
+  console.log(rating, reviewText);
+  if (!rating || !reviewText) {
     res.status(400);
     throw new Error("Invalid Form");
   }
@@ -101,7 +103,7 @@ async function updateRatingAndReviewForSkill(req, res) {
       {
         $set: {
           "skills.$.ratingsAndReviews.$[review].rating": rating,
-          "skills.$.ratingsAndReviews.$[review].review": review,
+          "skills.$.ratingsAndReviews.$[review].review": reviewText,
         },
       },
       {
