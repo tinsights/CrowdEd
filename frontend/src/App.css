@@ -1,3 +1,11 @@
 #map-container {
-  height: 100vh;
+  height: 80vh;
+}
+
+#hero {
+  background-image: url("assets/puzzle.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 80vh;
 }

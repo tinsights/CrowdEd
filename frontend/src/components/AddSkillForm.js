@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function AddSkillForm({ handleComplete }) {
+export default function AddSkillForm({ user, handleComplete }) {
   const navigate = useNavigate();
-  const { userId } = useParams();
 
   const [skill, setSkill] = useState({
     title: "",
@@ -27,14 +26,14 @@ export default function AddSkillForm({ handleComplete }) {
     e.preventDefault();
     // post to backend user data
     axios
-      .post(`/api/users/${userId}/skills`, skill)
+      .post(`/api/users/${user._id}/skills`, skill)
       .then(function (response) {
         console.log(response);
         // grab the user id from the response
         const skillId = response.data.insertedId;
         handleComplete();
         // redirect to user page
-        navigate(`/users/${userId}/skills/${skillId}`);
+        navigate(`/me`);
       })
       .catch(function (error) {
         console.log(error);

@@ -17,7 +17,7 @@ export default function EditUserForm({ user, completeEdit }) {
     e.preventDefault();
     // post to backend user data
     axios
-      .put(`http://localhost:5005/api/users/${user._id}`, { username, email, location, password })
+      .put(`/api/users/${user._id}`, { username, email, location, password })
       .then(function (response) {
         console.log(response);
         completeEdit();
@@ -61,6 +61,20 @@ export default function EditUserForm({ user, completeEdit }) {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+          />
+        </fieldset>
+        <fieldset className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Password
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            name="password"
+            id="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </fieldset>
         <fieldset className="mb-3">

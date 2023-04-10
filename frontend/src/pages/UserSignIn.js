@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import SignUp from "./SignUp";
 import Modal from "../components/Modal";
 
 // react component SignInForm that asks user for email and password to login to the app
@@ -28,9 +27,8 @@ export default function UserSignIn({ isLoggedIn, handleLogin }) {
         const userId = response.data._id;
         localStorage.setItem("userLoggedIn", userId);
         handleLogin();
-
         // redirect to user page
-        navigate(`/users/${userId}`);
+        navigate(`/me`);
       })
       .catch(function (error) {
         console.log(error);

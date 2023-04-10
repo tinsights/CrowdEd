@@ -15,7 +15,7 @@ export default function Users() {
     navigate(`/users/${userId}`);
   }
   function goToSkill(userId, skillId) {
-    navigate(`/users/${userId}skills/${skillId}`);
+    navigate(`/users/${userId}/skills/${skillId}`);
   }
 
   return (

@@ -28,11 +28,27 @@ export default function Home() {
 
   return (
     <>
-      <h1>Home</h1>
-      {/* search bar for postal code or address that queries the onemap API*/}
-      <input type="text" placeholder="Search for your address" value={addressQuery} onChange={(e) => onFormChange(e)} />
-      {/* button to search for postal code or address */}
-      <button onClick={askOneMap}>Search</button>
+      <div className="container-fluid d-flex align-items-center" id="hero">
+        <div className="container-md">
+          <div className="input-group">
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              placeholder="Where will you learn today?"
+              value={addressQuery}
+              onChange={(e) => onFormChange(e)}
+            />
+            <button
+              className="btn btn-outline-secondary bg-light opacity-50"
+              type="button"
+              id="button-addon2"
+              onClick={askOneMap}
+            >
+              Search
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

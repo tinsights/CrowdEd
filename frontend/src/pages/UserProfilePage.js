@@ -5,9 +5,9 @@ import AddSkillForm from "../components/AddSkillForm";
 import EditUserForm from "../components/EditUserForm";
 
 export default function UserProfilePage() {
+  const [user, setUser] = useState({});
   const [isEditingUser, setIsEditingUser] = useState(false);
   const [isAddingNewSkill, setIsAddingNewSkill] = useState(false);
-  const [user, setUser] = useState([]);
   let { userId } = useParams();
   const navigate = useNavigate();
 
@@ -27,7 +27,7 @@ export default function UserProfilePage() {
     axios.get(`/auth/checkUser`).then((response) => {
       setUser(response.data);
     });
-  }, []); // The code inside the Effect des not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
+  }, [isEditingUser, isAddingNewSkill]); // The code inside the Effect des not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
 
   // makes a axios delete request to delete this user based on id
   function deleteUser() {
@@ -37,21 +37,21 @@ export default function UserProfilePage() {
   }
 
   function goToSkill(id) {
-    navigate(`/users/${userId}/skills/${id}`);
+    navigate(`/users/${user._id}/skills/${id}`);
   }
   function completeUserEdit() {
     setIsEditingUser(false);
   }
 
   function editSkill(id) {
-    return () => navigate(`/users/${userId}/skills/${id}/edit`);
+    return () => navigate(`/users/${user._id}/skills/${id}/edit`);
   }
   function deleteSkill(id) {
     return () => {
       axios
-        .delete(`/api/users/${userId}/skills/${id}`)
+        .delete(`/api/users/${user._id}/skills/${id}`)
         .then((response) => {
-          navigate(`/users/${userId}`);
+          navigate(`/me`);
         })
         .catch((error) => {
           console.log(error);
@@ -81,7 +81,7 @@ export default function UserProfilePage() {
               </div>
             </>
           )}
-          {isEditingUser && <EditUserForm user={user} completeEdit={completeUserEdit} />}
+          {isEditingUser && <EditUserForm user={user} completeEdit={() => setIsEditingUser(false)} />}
         </div>
         <div className="container-sm mt-3">
           <h3>Skills</h3>

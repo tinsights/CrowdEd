@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function SignUpForm() {
+export default function SignUpForm({ handleClose }) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,8 +28,9 @@ export default function SignUpForm() {
         console.log(response);
         // grab the user id from the response
         const userId = response.data.insertedId;
+        handleClose();
         // redirect to user page
-        navigate(`/users/${userId}`);
+        navigate(`/signin`);
       })
       .catch(function (error) {
         console.log(error);

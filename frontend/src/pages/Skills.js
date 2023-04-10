@@ -29,7 +29,7 @@ export default function Skills() {
     navigate(`/users/${userId}`);
   }
   function goToSkill(userId, skillId) {
-    navigate(`/users/${userId}skills/${skillId}`);
+    navigate(`/users/${userId}/skills/${skillId}`);
   }
 
   return (
@@ -44,17 +44,10 @@ export default function Skills() {
                   <div
                     className="card-body"
                     onClick={() => {
-                      goToSkill(s._id);
+                      goToSkill(u._id, s._id);
                     }}
                   >
-                    <h3
-                      className="card-title"
-                      onClick={() => {
-                        goToSkill(s._id);
-                      }}
-                    >
-                      {s.title}
-                    </h3>
+                    <h3 className="card-title">{s.title}</h3>
                     <div className="card-text">
                       <p>{s.description}</p>
                     </div>
@@ -62,10 +55,10 @@ export default function Skills() {
                   <div className="card-footer">
                     <p
                       onClick={() => {
-                        goToUser(s.userID);
+                        goToUser(u._id);
                       }}
                     >
-                      {s.teacherName}
+                      {u.username}
                     </p>
                   </div>
                 </div>
