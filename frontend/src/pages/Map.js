@@ -1,4 +1,4 @@
-import { MapContainer, TileLayer, Marker, Popup, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, LayersControl, LayerGroup } from "react-leaflet";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,30 +32,34 @@ export default function Map() {
       />
       <LayersControl position="topright">
         <LayersControl.Overlay checked name="Skills">
-          {skills?.map((u) => (
-            <Marker position={[u.location.LATITUDE, u.location.LONGITUDE]} key={u._id}>
-              <Popup>
-                <h3 onClick={() => navigate(`/users/${u._id}`)}>{u.username}</h3>
-                <p>Skills:</p>
-                <ol>
-                  {u.skills?.map((s) => (
-                    <React.Fragment key={s._id}>
-                      <li onClick={goToSkill(u._id, s._id)}>{s.title}</li>
-                    </React.Fragment>
-                  ))}
-                </ol>
-              </Popup>
-            </Marker>
-          ))}
+          <LayerGroup>
+            {skills?.map((u) => (
+              <Marker position={[u.location.LATITUDE, u.location.LONGITUDE]} key={u._id}>
+                <Popup>
+                  <h3 onClick={() => navigate(`/users/${u._id}`)}>{u.username}</h3>
+                  <p>Skills:</p>
+                  <ol>
+                    {u.skills?.map((s) => (
+                      <React.Fragment key={s._id}>
+                        <li onClick={goToSkill(u._id, s._id)}>{s.title}</li>
+                      </React.Fragment>
+                    ))}
+                  </ol>
+                </Popup>
+              </Marker>
+            ))}
+          </LayerGroup>
         </LayersControl.Overlay>
         <LayersControl.Overlay checked name="Requests">
-          {requests?.map((u) => (
-            <Marker position={[u.location.LATITUDE, u.location.LONGITUDE]} key={u._id}>
-              <Popup>
-                <h3 onClick={() => navigate(`/users/${u._id}`)}>{u.username}</h3>
-              </Popup>
-            </Marker>
-          ))}
+          <LayerGroup>
+            {requests?.map((u) => (
+              <Marker position={[u.location.LATITUDE, u.location.LONGITUDE]} key={u._id}>
+                <Popup>
+                  <h3 onClick={() => navigate(`/users/${u._id}`)}>{u.username}</h3>
+                </Popup>
+              </Marker>
+            ))}
+          </LayerGroup>
         </LayersControl.Overlay>
       </LayersControl>
     </MapContainer>

@@ -20,8 +20,8 @@ export default function Users() {
 
   return (
     <>
-      <h2>All Users</h2>
       <div className="container">
+        <h2>All Users</h2>
         <div className="row row-cols-1 row-cols-md-3 g-4">
           {users?.map((u) => (
             <React.Fragment key={u._id}>
@@ -29,7 +29,7 @@ export default function Users() {
                 <div className="card h-100">
                   <div className="card-body">
                     <h3
-                      className="card-title"
+                      className="card-title clickable"
                       onClick={() => {
                         goToUser(u._id);
                       }}
@@ -42,6 +42,7 @@ export default function Users() {
                         {u.skills?.map((s) => (
                           <React.Fragment key={s._id}>
                             <li
+                              className="clickable"
                               onClick={() => {
                                 goToSkill(u._id, s._id);
                               }}

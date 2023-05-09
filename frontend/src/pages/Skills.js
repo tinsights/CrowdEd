@@ -34,38 +34,41 @@ export default function Skills() {
 
   return (
     <>
-      <h2>All Skills</h2>
-      <div className="row row-cols-1 row-cols-md-3 g-4">
-        {users?.map((u) =>
-          u.skills?.map((s) => (
-            <React.Fragment key={s._id}>
-              <div className="col">
-                <div className="card h-100">
-                  <div
-                    className="card-body"
-                    onClick={() => {
-                      goToSkill(u._id, s._id);
-                    }}
-                  >
-                    <h3 className="card-title">{s.title}</h3>
-                    <div className="card-text">
-                      <p>{s.description}</p>
-                    </div>
-                  </div>
-                  <div className="card-footer">
-                    <p
+      <div className="container">
+        <h2>All Skills</h2>
+        <div className="row row-cols-1 row-cols-md-3 g-4">
+          {users?.map((u) =>
+            u.skills?.map((s) => (
+              <React.Fragment key={s._id}>
+                <div className="col">
+                  <div className="card h-100">
+                    <div
+                      className="card-body"
                       onClick={() => {
-                        goToUser(u._id);
+                        goToSkill(u._id, s._id);
                       }}
                     >
-                      {u.username}
-                    </p>
+                      <h3 className="card-title">{s.title}</h3>
+                      <div className="card-text">
+                        <p>{s.description}</p>
+                      </div>
+                    </div>
+                    <div className="card-footer">
+                      <p
+                        className="clickable"
+                        onClick={() => {
+                          goToUser(u._id);
+                        }}
+                      >
+                        {u.username}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </React.Fragment>
-          ))
-        )}
+              </React.Fragment>
+            ))
+          )}
+        </div>
       </div>
     </>
   );

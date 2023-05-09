@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <>
       <div className="container-fluid d-flex align-items-center" id="hero">
-        <div className="container-md">
+        <div className="container">
           <div className="input-group">
             <input
               className="form-control form-control-lg"

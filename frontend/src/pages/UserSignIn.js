@@ -36,48 +36,55 @@ export default function UserSignIn({ isLoggedIn, handleLogin }) {
   }
   return (
     <>
-      <h1>Sign In</h1>
-      <form
-        method="POST"
-        onSubmit={(e) => {
-          handleSubmit(e);
-        }}
-      >
-        <fieldset className="mb-3">
-          <label htmlFor="email" className="form-label">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            name="email"
-            id="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </fieldset>
-        <fieldset className="mb-3">
-          <label htmlFor="password" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </fieldset>
-        <button type="submit" className="btn btn-primary">
-          Sign In
-        </button>
-      </form>
-      <p>
-        Don't have an account? <Modal />
-      </p>
+      <div className="container">
+        <div className="w-50 mt-3">
+          <h2>Sign In</h2>
+          <form
+            method="POST"
+            onSubmit={(e) => {
+              handleSubmit(e);
+            }}
+          >
+            <fieldset className="mb-3">
+              <label htmlFor="email" className="form-label">
+                Email address
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                name="email"
+                id="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </fieldset>
+            <fieldset className="mb-3">
+              <label htmlFor="password" className="form-label">
+                Password
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                name="password"
+                id="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </fieldset>
+            <button type="submit" className="btn btn-primary">
+              Sign In
+            </button>
+          </form>
+          <div className="d-flex justify-content-end align-items-center mt-3 p-3">
+            <p className="m-1">Don't have an account?</p>
+            <p className="m-2">
+              <Modal />
+            </p>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

@@ -41,11 +41,11 @@ function App() {
 
   return (
     <Router>
-      <header className="container-fluid">
+      <header className="container-fluid p-0">
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
         <nav className="navbar navbar-expand-sm bg-light">
-          <div className="container-fluid">
-            <ul className="navbar-nav w-100">
+          <div className="container-fluid p-0">
+            <ul className="navbar-nav w-100 container">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
                   Home
@@ -91,7 +91,7 @@ function App() {
           </div>
         </nav>
       </header>
-      <div className="container">
+      <div className="container-fluid p-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/me" element={<UserProfilePage />} />
