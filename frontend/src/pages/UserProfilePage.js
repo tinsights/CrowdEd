@@ -27,7 +27,7 @@ export default function UserProfilePage() {
     axios.get(`/auth/checkUser`).then((response) => {
       setUser(response.data);
     });
-  }, [isEditingUser, isAddingNewSkill]); // The code inside the Effect des not use any props or state, so your dependency array is [] (empty). This tells React to only run this code when the component “mounts”, i.e. appears on the screen for the first time.
+  }, [isEditingUser, isAddingNewSkill]);
 
   // makes a axios delete request to delete this user based on id
   function deleteUser() {
@@ -124,6 +124,40 @@ export default function UserProfilePage() {
               <button className="btn btn-primary" onClick={() => setIsAddingNewSkill(true)}>
                 Add New Skill
               </button>
+            </div>
+          )}
+        </div>
+        {/* display requests */}
+        <div>
+          {user.requests?.length > 0 && (
+            <div className="row row-cols-1 row-cols-md-3 g-4">
+              {user.requests.map((r) => (
+                <div className="col" key={r._id}>
+                  <div
+                    className="card h-100"
+                    onClick={() => {
+                      goToSkill(r._id);
+                    }}
+                  >
+                    <div className="card-body">
+                      <h5 className="card-title">{r.title}</h5>
+                      <p className="card-text">{r.description}</p>
+                    </div>
+                    {/* add buttons to edit or delete the skill */}
+                    <div className="d-flex justify-content-around mb-2">
+                      <button className="btn btn-warning btm-sm" onClick={editSkill(r._id)}>
+                        Edit
+                      </button>
+                      <button className="btn btn-danger btm-sm" onClick={deleteSkill(r._id)}>
+                        Delete
+                      </button>
+                    </div>
+                    <div className="card-footer">
+                      <small className="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
         </div>
