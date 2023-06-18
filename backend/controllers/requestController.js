@@ -19,7 +19,6 @@ async function getAllRequests(req, res) {
           username: 1,
           location: 1,
           requests: 1,
-          password: 0,
         },
       }
     )
