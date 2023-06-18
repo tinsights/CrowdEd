@@ -19,6 +19,7 @@ async function getAllRequests(req, res) {
           username: 1,
           location: 1,
           requests: 1,
+          password: 0,
         },
       }
     )
@@ -37,10 +38,14 @@ async function getRequestsForUser(req, res) {
   const userId = new ObjectId(req.params.userId);
   db.get()
     .collection("users")
-    .findOne({
-      _id: userId,
-    })
+    .findOne(
+      {
+        _id: userId,
+      },
+      { projection: { password: 0, skills: 0 } }
+    )
     .then((result) => {
+      console.log(result);
       res.status(200).json(result.requests);
     })
     .catch((err) => {
@@ -52,10 +57,10 @@ async function getRequestsForUser(req, res) {
 // create a request for a user
 async function createRequestForUser(req, res) {
   const payload = req.body;
+  console.log(payload);
   const { title, description, category } = payload;
   if (!title || !description || !category) {
-    res.status(400);
-    throw new Error("Invalid Form");
+    res.status(400).send("Invalid Form");
   }
   const userId = new ObjectId(req.params.userId);
   db.get()
@@ -72,6 +77,11 @@ async function createRequestForUser(req, res) {
       },
       {
         returnDocument: "after",
+        projection: {
+          password: 0,
+          skills: 0,
+          requests: { $slice: -1 },
+        },
       }
     )
     .then((result) => {
@@ -131,7 +141,11 @@ async function deleteRequest(req, res) {
   const requestId = new ObjectId(req.params.requestId);
   db.get()
     .collection("users")
-    .findOneAndUpdate({ _id: userId }, { $pull: { requests: { _id: requestId } } })
+    .findOneAndUpdate(
+      { _id: userId },
+      { $pull: { requests: { _id: requestId } } },
+      { returnDocument: "after", projection: { password: 0, skills: 0 } }
+    )
     .then((result) => {
       res.status(200).json(result);
     })
@@ -157,6 +171,7 @@ async function searchRequests(req, res) {
     .project({
       name: 1,
       email: 1,
+      password: 0,
       requests: {
         $filter: {
           input: "$requests",
