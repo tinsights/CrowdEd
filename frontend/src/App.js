@@ -1,6 +1,6 @@
 // import react router stuff
 import { BrowserRouter as Router, Routes, Route, NavLink } from "react-router-dom";
-import { useState, createContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 import Home from "./pages/Home";

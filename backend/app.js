@@ -10,6 +10,9 @@ const getAllSkills = require("./controllers/skillController").getAllSkills;
 const getAllRequests = require("./controllers/requestController").getAllRequests;
 
 const PORT = process.env.PORT || 8888;
+const buildPath = path.join(__dirname, "../frontend/build");
+
+app.use(express.static(buildPath));
 
 app.use(cors());
 app.use(cookieParser());
@@ -32,6 +35,9 @@ async function main() {
   });
   // auth routes
   app.use("/auth", require("./routes/authRoutes"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(buildPath, "index.html"));
+  });
 }
 
 main();

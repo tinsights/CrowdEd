@@ -11,7 +11,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "npm -w backend start",
     "client": "npm -w frontend start",
-    "start": "npm -w backend start & npm -w frontend start"
+    "start": "npm -w backend start & npm -w frontend start",
+    "build": "npm -w frontend run build & npm -w backend start"
   },
   "repository": {
     "type": "git",
@@ -23,7 +24,7 @@
   "bugs": {
     "url": "https://github.com/tinsights/CrowdEd/issues"
   },
-  "homepage": "https://github.com/tinsights/CrowdEd#readme",
+  "homepage": ".",
   "dependencies": {
     "concurrently": "^7.6.0"
   }
