@@ -43,51 +43,64 @@ function App() {
     <Router>
       <header className="container-fluid p-0">
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
-        <nav className="navbar navbar-expand-sm bg-light">
-          <div className="container-fluid p-0">
-            <ul className="navbar-nav w-100 container">
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/">
-                  Home
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/users">
-                  Users
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/skills">
-                  Skills
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/map">
-                  Map
-                </NavLink>
-              </li>
-              {!isLoggedIn && (
-                <li className="nav-item ms-auto">
-                  <NavLink className="nav-link" to="/signin">
-                    Sign In
-                  </NavLink>
-                </li>
-              )}
-              {isLoggedIn && (
-                <li className="nav-item ms-auto">
-                  <NavLink className="nav-link" to="/me">
-                    My Profile
-                  </NavLink>
-                </li>
-              )}
-              {isLoggedIn && (
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container-fluid">
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li className="nav-item">
-                  <NavLink className="nav-link" to="/signout">
-                    Sign Out
+                  <NavLink className="nav-link" to="/">
+                    Home
                   </NavLink>
                 </li>
-              )}
-            </ul>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/users">
+                    Users
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/skills">
+                    Skills
+                  </NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/map">
+                    Map
+                  </NavLink>
+                </li>
+                {!isLoggedIn && (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/signin">
+                      Sign In
+                    </NavLink>
+                  </li>
+                )}
+                {isLoggedIn && (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/me">
+                      My Profile
+                    </NavLink>
+                  </li>
+                )}
+                {isLoggedIn && (
+                  <li className="nav-item">
+                    <NavLink className="nav-link" to="/signout">
+                      Sign Out
+                    </NavLink>
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
         </nav>
       </header>
