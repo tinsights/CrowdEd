@@ -37,7 +37,7 @@ export default function UserSignIn({ isLoggedIn, handleLogin }) {
   return (
     <>
       <div className="container">
-        <div className="w-50 mt-3 mx-auto p-3 shadow-sm rounded">
+        <div className="mt-3 col-12 col-md-6 mx-auto p-3 shadow-sm rounded">
           <h2>Sign In</h2>
           <form
             method="POST"

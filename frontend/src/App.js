@@ -44,7 +44,7 @@ function App() {
       <header className="container-fluid p-0">
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container-fluid">
+          <div class="container">
             <button
               class="navbar-toggler"
               type="button"
