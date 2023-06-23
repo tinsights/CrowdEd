@@ -43,8 +43,13 @@ function App() {
     <Router>
       <header className="container-fluid p-0">
         <h1 className="h1 display-1 text-center">CrowdEd</h1>
+<<<<<<< HEAD
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
           <div class="container">
+=======
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+          <div class="container-fluid">
+>>>>>>> cc6e862 (url parser for descriptions)
             <button
               class="navbar-toggler"
               type="button"

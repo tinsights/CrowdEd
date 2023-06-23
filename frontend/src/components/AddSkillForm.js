@@ -15,6 +15,10 @@ export default function AddSkillForm({ user, handleComplete }) {
 
   useEffect(() => {
     axios.get("/api/categories").then((response) => {
+      // sort categories alphabetically
+      response.data.sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
       setCategories(response.data);
     });
   }, []);

@@ -56,6 +56,16 @@ export default function Map() {
               <Marker position={[u.location.LATITUDE, u.location.LONGITUDE]} key={u._id}>
                 <Popup>
                   <h3 onClick={() => navigate(`/users/${u._id}`)}>{u.username}</h3>
+                  <p>Requests:</p>
+                  <ol>
+                    {u.requests?.map((r) => (
+                      <React.Fragment key={r._id}>
+                        <li>
+                          {r.title}:{r.description}
+                        </li>
+                      </React.Fragment>
+                    ))}
+                  </ol>
                 </Popup>
               </Marker>
             ))}

@@ -22,7 +22,15 @@ app.use(errorHandler);
 app.set("views", path.join(__dirname, "/views"));
 
 async function main() {
-  await db.connect();
+  try {
+    await db.connect();
+  } catch (err) {
+    console.log(err);
+    // return 503 for all requests if db connection fails
+    app.use((req, res) => {
+      res.status(503).json({ message: "Service Unavailable" });
+    });
+  }
   app.use("/:mode/users", require("./routes/userRoutes"));
   app.use("/:mode/users/:userId/skills", require("./routes/skillRoutes"));
   app.use("/:mode/users/:userId/requests", require("./routes/requestRoutes"));

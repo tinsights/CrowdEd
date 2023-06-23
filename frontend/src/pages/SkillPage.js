@@ -39,6 +39,18 @@ export default function SkillPage() {
     setReview({ ...review, [e.target.name]: e.target.value });
   }
 
+  function isValidUrl(urlString) {
+    var urlPattern = new RegExp(
+      "^(https?:\\/\\/)?" + // validate protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // validate port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // validate query string
+        "(\\#[-a-z\\d_]*)?$",
+      "i"
+    ); // validate fragment locator
+    return !!urlPattern.test(urlString);
+  }
   return (
     <>
       <div className="container">
@@ -46,6 +58,13 @@ export default function SkillPage() {
           <div className="col-12 col-lg-8 shadow p-3 mb-5 bg-body rounded">
             <h3>{skill.title}</h3>
             <p>{skill.description}</p>
+            <p>
+              {skill.experience?.split(" ").map((str) => {
+                if (isValidUrl(str)) {
+                  return <a href={str}>{str}</a>;
+                } else return str + " ";
+              })}
+            </p>
             <p>Reviews:</p>
             <div className="row row-cols-1 row-cols-md-3 g-4">
               {skill.ratingsAndReviews?.map((review) => (
