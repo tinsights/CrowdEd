@@ -40,7 +40,7 @@ export default function SkillPage() {
   }
 
   function isValidUrl(urlString) {
-    var urlPattern = new RegExp(
+    const urlPattern = new RegExp(
       "^(https?:\\/\\/)?" + // validate protocol
         "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // validate domain name
         "((\\d{1,3}\\.){3}\\d{1,3}))" + // validate OR ip (v4) address
@@ -66,21 +66,25 @@ export default function SkillPage() {
               })}
             </p>
             <p>Reviews:</p>
-            <div className="row row-cols-1 row-cols-md-3 g-4">
-              {skill.ratingsAndReviews?.map((review) => (
-                <div key={review._id} className="col">
-                  <div className="card h-100">
-                    <div className="card-body">
-                      <h5 className="card-title">{review.rating}</h5>
-                      <p className="card-text">{review.review}</p>
-                      <div onClick={goToUser(review.reviewer._id)} class="card-footer text-muted">
-                        {review.reviewer.username}
+            {skill.ratingsAndReviews ? (
+              <div className="row row-cols-1 row-cols-md-3 g-4">
+                {skill.ratingsAndReviews?.map((review) => (
+                  <div key={review._id} className="col">
+                    <div className="card h-100">
+                      <div className="card-body">
+                        <h5 className="card-title">{review.rating}</h5>
+                        <p className="card-text">{review.review}</p>
+                        <div onClick={goToUser(review.reviewer._id)} class="card-footer text-muted">
+                          {review.reviewer.username}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ) : (
+              <p>No Reviews Yet</p>
+            )}
           </div>
           <div className="col-12 col-lg-4 shadow p-3 mb-5 bg-body rounded" onClick={goToUser(user?._id)}>
             <h3>{user?.username}</h3>
@@ -103,6 +107,8 @@ export default function SkillPage() {
                         type="number"
                         className="form-control"
                         id="rating"
+                        min="1"
+                        max="5"
                         name="rating"
                         value={review.rating}
                         onChange={(e) => onReviewChange(e)}
