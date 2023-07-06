@@ -25,7 +25,6 @@ async function getAllUsers(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -34,7 +33,6 @@ function addUser(req, res) {
   const { username, email, location, password } = payload;
   if (!username || !email || !location || !password) {
     res.status(400);
-    throw new Error("Invalid Form");
   } else {
     // generate a salt
     const salt = bcrypt.genSaltSync(10);
@@ -60,9 +58,7 @@ function addUser(req, res) {
             break;
         }
       })
-      .catch((err) => {
-        throw new Error(err);
-      });
+      .catch((err) => {});
   }
 }
 
@@ -94,7 +90,6 @@ function getUserById(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -103,7 +98,6 @@ function updateUser(req, res) {
   const { username, email, location } = payload;
   if (!username || !email || !location) {
     res.status(400);
-    throw new Error("Invalid Form");
   }
   const idToUpdate = req.params.id;
   db.get()
@@ -136,7 +130,6 @@ function updateUser(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -150,7 +143,6 @@ function deleteUser(req, res) {
     .then((result) => res.status(200).json(result))
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 

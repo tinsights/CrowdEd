@@ -28,7 +28,6 @@ async function getAllRequests(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -49,7 +48,6 @@ async function getRequestsForUser(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -88,7 +86,6 @@ async function createRequestForUser(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -104,7 +101,6 @@ async function getRequestById(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -130,7 +126,6 @@ async function updateRequest(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -150,7 +145,6 @@ async function deleteRequest(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -187,7 +181,6 @@ async function searchRequests(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 

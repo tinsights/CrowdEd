@@ -14,7 +14,6 @@ async function userLogin(req, res) {
   const { email, password } = payload;
   if (!email || !password) {
     res.status(400);
-    throw new Error("Invalid Form");
   } else {
     const user = await db.get().collection("users").findOne({
       email,
@@ -25,7 +24,6 @@ async function userLogin(req, res) {
       res.status(200).json({ ...user, token });
     } else {
       res.status(404);
-      throw new Error("Invalid Credentials");
     }
   }
 }

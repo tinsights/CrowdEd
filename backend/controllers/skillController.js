@@ -28,7 +28,6 @@ async function getAllSkills(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -46,7 +45,6 @@ async function getSkillsForUser(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -60,7 +58,6 @@ async function createSkillForUser(req, res) {
 
   if (!title || !description || !category) {
     res.status(400);
-    throw new Error("Invalid Form");
   } else {
     // update user with new skillid reference
     const insertedId = new ObjectId();
@@ -125,7 +122,6 @@ function getSkillById(req, res) {
     .catch((err) => {
       console.log(err);
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -135,7 +131,6 @@ function updateSkill(req, res) {
   const { title, description, category } = payload;
   if (!title || !description || !category) {
     res.status(400);
-    throw new Error("Invalid Form");
   }
   const { userId, skillId } = req.params;
   // update skill embdedded document
@@ -173,7 +168,6 @@ function updateSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -200,7 +194,6 @@ function deleteSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -243,7 +236,6 @@ function searchSkills(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 

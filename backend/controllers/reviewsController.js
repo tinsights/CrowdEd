@@ -21,7 +21,6 @@ async function getReviewsForSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -34,12 +33,10 @@ async function createRatingAndReviewForSkill(req, res) {
   const { rating, reviewText } = payload;
   if (!rating || !reviewText) {
     res.status(400);
-    throw new Error("Invalid Form");
   }
   // check if rating is between 1 and 5
   if (rating < 0 || rating > 5) {
     res.status(400);
-    throw new Error("Invalid Rating");
   }
 
   const userId = new ObjectId(req.params.userId);
@@ -67,7 +64,6 @@ async function createRatingAndReviewForSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -79,12 +75,10 @@ async function updateRatingAndReviewForSkill(req, res) {
   console.log(rating, reviewText);
   if (!rating || !reviewText) {
     res.status(400);
-    throw new Error("Invalid Form");
   }
   // check if rating is between 1 and 5
   if (rating < 0 || rating > 5) {
     res.status(400);
-    throw new Error("Invalid Rating");
   }
 
   const userId = new ObjectId(req.params.userId);
@@ -122,7 +116,6 @@ async function updateRatingAndReviewForSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
@@ -154,7 +147,6 @@ async function deleteRatingAndReviewForSkill(req, res) {
     })
     .catch((err) => {
       res.status(500);
-      throw new Error(err);
     });
 }
 
